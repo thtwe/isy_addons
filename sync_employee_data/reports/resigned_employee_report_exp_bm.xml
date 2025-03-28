@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- <report
+      id="report_resigned_employee_report_exp_bm"
+      model="hr.employee"
+      string="Resigned Employee Report (Expatriate/Business Manager)"
+      report_type="qweb-pdf"
+      name="sync_employee_data.resigned_report_employee_exp_bm"
+      file="sync_employee_data.resigned_report_employee_exp_bm"
+      paperformat="sync_employee_data.paperformat_payslip_with_adjustment"/> -->
+
+      <record id="report_resigned_employee_report_exp_bm" model="ir.actions.report">
+        <field name="name">Resigned Employee Report (Expatriate/Business Manager)</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sync_employee_data.resigned_report_employee_exp_bm</field>
+        <field name="report_file">sync_employee_data.resigned_report_employee_exp_bm</field>
+        <field name="paperformat_id" ref='sync_employee_data.paperformat_payslip_with_adjustment' />
+    </record>
+
+    <template id="resigned_report_employee_exp_bm">
+      <t t-call="web.basic_layout">
+        <t t-foreach="docs" t-as="doc">
+          <div class="page" style="font-size:18px;text-align:justify;font-family:Georgias;">
+            <div class="row">
+              <div class="col-4">
+                <label>Date :</label>
+                <t t-if="doc.x_studio_date">
+                  <span t-esc="doc.x_studio_date.strftime('%B %d, %Y')"/>
+                </t>
+              </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="text-center">
+              <h5>To Whom It May Concern</h5>
+            </div>
+            <br/>
+            <div class="row" style="text-align: justify;">
+              <div class="col-12">
+                <p>
+                  The International School Yangon (ISY) is an organization providing an American Curriculum education to the children of diplomats and the international business community. It is accredited by Western Association of School and Colleges of United States
+                  of America.
+                </p>
+              </div>
+            </div>
+            <div class="row" style="text-align: justify;">
+              <div class="col-12">
+                <br/>
+                <p>
+                  This is to formally verify that
+                  <span t-field="doc.name"/>
+                  (<span t-field="doc.x_enthnicity"/>
+                  Passport Number:
+                  <span t-field="doc.x_nrc_passport"/>) worked full-time as a
+                  <span t-field="doc.x_job"/>
+                  at the International School Yangon from
+                  <span t-field="doc.x_hire_date"/>
+                  to
+                  <span t-esc="doc.x_last_date"/>. 
+                </p>
+              </div>
+            </div>
+            <div class="row" style="text-align: justify">
+              <div class="col-12">
+                <br/>
+                <p>
+                  If you have any further queries, please contact us through the information provide below.
+                </p>
+              </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="row">
+              <div class="col-3">
+                <span>Yours sincerely,</span>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <span>Steven Linn</span>
+                <br/>
+                <span>Business Manager</span>
+              </div>
+            </div>
+          </div>
+        </t>
+      </t>
+    </template>
+
+  </data>
+</odoo>

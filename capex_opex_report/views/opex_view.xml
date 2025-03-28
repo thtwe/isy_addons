@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+        <menuitem
+            name="Opex Report by Monthly Budget"
+            id="isy_opex_main_menu"
+            parent="accounting_budget_extension_V7.menu_financial_report_root"
+            sequence="1"/>
+
+        <record model="ir.ui.view" id="isy_opex_form_view">
+            <field name="name">isy.opex.form</field>
+            <field name="model">isy.opex</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <h2><field name='name'/></h2>
+                        <group>
+                            <group>
+                                <field name="f_date" class="oe_inline" options="{'no_create':True,'no_open':True}"/>
+                                <field name="date_to_forreport" class="oe_inline" />
+                                <field name="o_type" class="oe_inline"/>
+                                <field name='date_start' class='oe_inline' invisible='1'/>
+                                <field name='date_end' class='oe_inline' invisible='1'/>
+                                <field name='date_from' class='oe_inline' invisible='1'/>
+                                <field name='date_to' class='oe_inline' invisible='1'/>
+                                <field name='sequence' class='oe_inline'/>
+                                <field name='active'/>
+                                <field name='show_only_actual'/>
+                                <field name='company_id' class='oe_inline' groups='base.group_no_one'/>
+                            </group>
+                            <group>
+                                <field name="budget_total"/>
+                                <field name="actual_total"/>
+                                <field name="percentage"/>
+                            </group>
+                        </group>
+                        <group string="Monthly Total (Budget ~ Actual)">
+                            <group>
+                                <label string="JUL" for="budget_july"/>
+                                <div>
+                                    <field name="budget_july" class="oe_inline"/> ~
+                                    <field name="actual_july" class="oe_inline"/>
+                                </div>
+                                <label string="AUG" for="budget_aug"/>
+                                <div>
+                                    <field name="budget_aug" class="oe_inline"/> ~
+                                    <field name="actual_aug" class="oe_inline" force_save='1'/>
+                                </div>
+                                <label string="SEP" for="budget_sep"/>
+                                <div>
+                                    <field name="budget_sep" class="oe_inline"/> ~
+                                    <field name="actual_sep" class="oe_inline"/>
+                                </div>
+                                <label string="OCT" for="budget_oct"/>
+                                <div>
+                                    <field name="budget_oct" class="oe_inline"/> ~
+                                    <field name="actual_oct" class="oe_inline"/>
+                                </div>
+                                <label string="NOV" for="budget_nov"/>
+                                <div>
+                                    <field name="budget_nov" class="oe_inline"/> ~
+                                    <field name="actual_nov" class="oe_inline"/>
+                                </div>
+                                <label string="DEC" for="budget_dec"/>
+                                <div>
+                                    <field name="budget_dec" class="oe_inline"/> ~
+                                    <field name="actual_dec" class="oe_inline"/>
+                                </div>
+                            </group>
+                            <group>
+                                <label string="JAN" for="budget_jan"/>
+                                <div>
+                                    <field name="budget_jan" class="oe_inline"/> ~
+                                    <field name="actual_jan" class="oe_inline"/>
+                                </div>
+                                <label string="FEB" for="budget_feb"/>
+                                <div>
+                                    <field name="budget_feb" class="oe_inline"/> ~
+                                    <field name="actual_feb" class="oe_inline"/>
+                                </div>
+                                <label string="MAR" for="budget_mar"/>
+                                <div>
+                                    <field name="budget_mar" class="oe_inline"/> ~
+                                    <field name="actual_mar" class="oe_inline"/>
+                                </div>
+                                <label string="APR" for="budget_apr"/>
+                                <div>
+                                    <field name="budget_apr" class="oe_inline"/> ~
+                                    <field name="actual_apr" class="oe_inline"/>
+                                </div>
+                                <label string="MAY" for="budget_may"/>
+                                <div>
+                                    <field name="budget_may" class="oe_inline"/> ~
+                                    <field name="actual_may" class="oe_inline"/>
+                                </div>
+                                <label string="JUN" for="budget_jun"/>
+                                <div>
+                                    <field name="budget_jun" class="oe_inline"/> ~
+                                    <field name="actual_jun" class="oe_inline"/>
+                                </div>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="July">
+                                <field name="lines_july" domain="[('date_start','=','2021-07-01')]" context="{'default_date_start':str(date_start)+'-07-01','default_date_end':str(date_start)+'-07-31'}">
+                                </field>
+                            </page>
+                            <page string="August">
+                                <field name="lines_aug" context="{'default_date_start':str(date_start)+'-08-01','default_date_end':str(date_start)+'-08-31'}">
+                                </field>
+                            </page>
+                            <page string="September">
+                                <field name="lines_sep" context="{'default_date_start':str(date_start)+'-09-01','default_date_end':str(date_start)+'-09-30'}">
+                                </field>
+                            </page>
+                            <page string="Octomber">
+                                <field name="lines_oct" context="{'default_date_start':str(date_start)+'-10-01','default_date_end':str(date_start)+'-10-31'}">
+                                </field>
+                            </page>
+                            <page string="November">
+                                <field name="lines_nov" context="{'default_date_start':str(date_start)+'-11-01','default_date_end':str(date_start)+'-11-30'}">
+                                </field>
+                            </page>
+                            <page string="December">
+                                <field name="lines_dec" context="{'default_date_start':str(date_start)+'-12-01','default_date_end':str(date_start)+'-12-31'}">
+                                </field>
+                            </page>
+                            <page string="January">
+                                <field name="lines_jan" context="{'default_date_start':str(date_end)+'-01-01','default_date_end':str(date_end)+'-01-31'}">
+                                </field>
+                            </page>
+                            <page string="February">
+                                <field name="lines_feb" context="{'default_date_start':str(date_end)+'-02-01','default_date_end':str(date_end)+'-02-28'}">
+                                </field>
+                            </page>
+                            <page string="March">
+                                <field name="lines_mar" context="{'default_date_start':str(date_end)+'-03-01','default_date_end':str(date_end)+'-03-31'}">
+                                </field>
+                            </page>
+                            <page string="April">
+                                <field name="lines_apr" context="{'default_date_start':str(date_end)+'-04-01','default_date_end':str(date_end)+'-04-30'}">
+                                </field>
+                            </page>
+                            <page string="May">
+                                <field name="lines_may" context="{'default_date_start':str(date_end)+'-05-01','default_date_end':str(date_end)+'-05-31'}">
+                                </field>
+                            </page>
+                            <page string="June">
+                                <field name="lines_jun" context="{'default_date_start':str(date_end)+'-06-01','default_date_end':str(date_end)+'-06-30'}">
+                                </field>
+                            </page>
+                            
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="isy_opex_tree_view">
+            <field name="name">isy.opex.tree</field>
+            <field name="model">isy.opex</field>
+            <field name="arch" type="xml">
+                <tree default_order='sequence'>
+                    <field name="sequence" widget='handle'/>
+                    <field name="name" string='Budget'/>
+                    <field name="budget_july" string="JUL"/>
+                    <field name="budget_aug" string="AUG"/>
+                    <field name="budget_sep" string="SEP"/>
+                    <field name="budget_oct" string="OCT"/>
+                    <field name="budget_nov" string="NOV"/>
+                    <field name="budget_dec" string="DEC"/>
+                    <field name="budget_jan" string="JAN"/>
+                    <field name="budget_feb" string="FEB"/>
+                    <field name="budget_mar" string="MAR"/>
+                    <field name="budget_apr" string="APR"/>
+                    <field name="budget_may" string="MAY"/>
+                    <field name="budget_jun" string="JUN"/>
+                    <field name="budget_total" string="YEAR"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_isy_opex" model="ir.actions.act_window">
+            <field name="name">Opex</field>
+            <field name="res_model">isy.opex</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="isy_opex_tree_view"/>
+        </record>
+        <menuitem
+            name="Opex"
+            id="isy_opex_menu"
+            parent="isy_opex_main_menu"
+            action="action_isy_opex"
+            sequence="1"/>
+
+        <record model="ir.ui.view" id="isy_opex_line_form_view">
+            <field name="name">isy.opex.line.form</field>
+            <field name="model">isy.opex.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name='account_id'/>
+                            <field name="budget_id"/>
+                            <field name='date_start'/>
+                            <field name='date_end'/>
+                            <field name='budget_amount'/>
+                            <field name='actual_amount'/>
+                            <field name='july_opex_id' />
+                            <field name='aug_opex_id' />
+                            <field name='sep_opex_id' />
+                            <field name='oct_opex_id' />
+                            <field name='nov_opex_id' />
+                            <field name='dec_opex_id' />
+                            <field name='jan_opex_id' />
+                            <field name='feb_opex_id' />
+                            <field name='mar_opex_id' />
+                            <field name='apr_opex_id' />
+                            <field name='may_opex_id' />
+                            <field name='jun_opex_id' />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="isy_opex_line_tree_view">
+            <field name="name">isy.opex.line.tree</field>
+            <field name="model">isy.opex.line</field>
+            <field name="arch" type="xml">
+                <tree editable='bottom'>
+                    <field name='account_id'/>
+                    <field name="budget_id"/>
+                    <field name='date_start'/>
+                    <field name='date_end'/>
+                    <field name='budget_planned_amount'/>
+                    <field name='budget_amount' sum="Total"/>
+                    <field name='actual_amount' sum="Total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="isy_opex_line_tree_1_view">
+            <field name="name">isy.opex.line.tree1</field>
+            <field name="model">isy.opex.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name='account_id'/>
+                    <field name="budget_id"/>
+                    <field name='date_start'/>
+                    <field name='date_end'/>
+                    <field name='budget_planned_amount'/>
+                    <field name='budget_amount'/>
+                    <field name='actual_amount'/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="isy_opex_line_search_1_view">
+            <field name="name">isy.opex.line.search</field>
+            <field name="model">isy.opex.line</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="july_opex_id" string="Opex" filter_domain="['|','|','|','|','|','|','|','|','|','|','|',('july_opex_id','ilike',self),('aug_opex_id','ilike',self),('sep_opex_id','ilike',self),('oct_opex_id','ilike',self),('nov_opex_id','ilike',self),('dec_opex_id','ilike',self),('jan_opex_id','ilike',self),('feb_opex_id','ilike',self),('mar_opex_id','ilike',self),('apr_opex_id','ilike',self),('may_opex_id','ilike',self),('jun_opex_id','ilike',self)]" />
+                    <field name='account_id'/>
+                    <field name="budget_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_isy_opex_lines" model="ir.actions.act_window">
+            <field name="name">Opex Lines</field>
+            <field name="res_model">isy.opex.line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="isy_opex_line_tree_1_view"/>
+        </record>
+        <menuitem
+            name="Opex Lines"
+            id="isy_opex_line_menu"
+            parent="isy_opex_main_menu"
+            action="action_isy_opex_lines"
+            sequence="2"/>
+
+        <record model="ir.ui.view" id="isy_opex_group_form_view">
+            <field name="name">isy.opex.group.form</field>
+            <field name="model">isy.opex.group</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name='name'/>
+                        <field name='account_ids' widget='many2many_tags' />
+                        <field name='sequence'/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="isy_opex_group_view">
+            <field name="name">isy.opex.group.tree</field>
+            <field name="model">isy.opex.group</field>
+            <field name="arch" type="xml">
+                <tree >
+                    <field name='sequence'/>
+                    <field name='name'/>
+                    <field name='account_ids' widget='many2many_tags' />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_isy_opex_group" model="ir.actions.act_window">
+            <field name="name">Opex Groups</field>
+            <field name="res_model">isy.opex.group</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="isy_opex_group_view"/>
+        </record>
+        <menuitem
+            name="Opex Groups"
+            id="isy_opex_group_menu"
+            parent="capex_opex_report.isy_opex_main_menu"
+            action="action_isy_opex_group"
+            sequence="5"/>
+</odoo>

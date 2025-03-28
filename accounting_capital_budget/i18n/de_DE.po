@@ -1,0 +1,270 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* accounting_budget_extension
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-19 09:18+0000\n"
+"PO-Revision-Date: 2018-11-19 09:18+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:149
+#, python-format
+msgid "%s Budget %s"
+msgstr "%s Budget %s"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__account_id
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_search
+msgid "Account"
+msgstr "Konto"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:17
+#: model:ir.model,name:accounting_budget_extension.model_budgetextension_budget
+#, python-format
+msgid "Account Budget for a fiscal year"
+msgstr "Kontobudget für ein Geschäftsjahr"
+
+#. module: accounting_budget_extension
+#: model:ir.model,name:accounting_budget_extension.model_account_financial_html_report_line
+msgid "Account Report (HTML Line)"
+msgstr "Kontoauszug (HTML Linie)"
+
+#. module: accounting_budget_extension
+#: model:ir.model,name:accounting_budget_extension.model_account_financial_html_report
+msgid "Account Report (HTML)"
+msgstr "Kontoauszug (HTML)"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.search_template_comparison_inherit
+msgid "Budget Comparison"
+msgstr "Budgetvergleich"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/account_financial_report_inheritance.py:31
+#, python-format
+msgid "Budget Difference"
+msgstr "Budgetdifferenz"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_form
+msgid "Budget Form"
+msgstr "Budget Formular"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__name
+msgid "Budget Name"
+msgstr "Budgetname"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/account_financial_report_inheritance.py:30
+#, python-format
+msgid "Budget Set Amount"
+msgstr "Festgesetzter Budgetbetrag"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/account_financial_report_inheritance.py:29
+#, python-format
+msgid "Budget Theoretical Amount"
+msgstr "Theoretischer Budgetbetrag"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_tree
+msgid "Budget Tree"
+msgstr "Budgetbaum"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:122
+#: code:addons/accounting_budget_extension/models/budget.py:124
+#, python-format
+msgid "Copy of %s"
+msgstr "Kopie von %s"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:126
+#, python-format
+msgid "Copy of %s (%r)"
+msgstr "Kopie von %s (%r)"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.actions.act_window,help:accounting_budget_extension.budget_action
+msgid "Create the first budget!"
+msgstr "Erstelle das erste Budget!"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__create_uid
+msgid "Created by"
+msgstr "Erstellt von"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__create_date
+msgid "Created on"
+msgstr "Erstellt am"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__duration_days
+msgid "Duration Days"
+msgstr "Laufzeit"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__end_date
+msgid "End Date"
+msgstr "Enddatum"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,help:accounting_budget_extension.field_budgetextension_budget__end_date
+msgid "End date of period"
+msgstr "Enddatum der Periode"
+
+#. module: accounting_budget_extension
+#: model:ir.actions.act_window,name:accounting_budget_extension.budget_action
+#: model:ir.ui.menu,name:accounting_budget_extension.budget_menu
+msgid "Extended Budgets"
+msgstr "Erweiterte Budgets"
+
+#. module: accounting_budget_extension
+#: model:ir.actions.server,name:accounting_budget_extension.ir_cron_scheduler_budgetextension_budget_ir_actions_server
+#: model:ir.cron,cron_name:accounting_budget_extension.ir_cron_scheduler_budgetextension_budget
+#: model:ir.cron,name:accounting_budget_extension.ir_cron_scheduler_budgetextension_budget
+msgid "Extended Budgets Scheduler"
+msgstr "Erweiterter Budget Planer"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_search
+msgid "Future fiscal years"
+msgstr "Zukünftige Geschäftsjahre"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_search
+msgid "Group By"
+msgstr "Gruppieren nach"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__id
+msgid "ID"
+msgstr "ID"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget____last_update
+msgid "Last Modified on"
+msgstr "Zuletzt geändert am"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__write_uid
+msgid "Last Updated by"
+msgstr "Zuletzt aktualisiert durch"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__write_date
+msgid "Last Updated on"
+msgstr "Zuletzt aktualisiert am"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_search
+msgid "Past fiscal years"
+msgstr "Vergangene Geschäftsjahre"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__planned_amount
+msgid "Planned Amount"
+msgstr "Geplanter Betrag"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_graph
+msgid "Planned amount by accounts"
+msgstr "Geplanter Betrag nach Konten"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,help:accounting_budget_extension.field_budgetextension_budget__name
+msgid "Required to distinguish the budgets"
+msgstr "Wird gebraucht, um die Budgets unterscheiden zu können"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__start_date
+msgid "Start Date"
+msgstr "Startdatum"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,help:accounting_budget_extension.field_budgetextension_budget__start_date
+msgid "Start date of period"
+msgstr "Startdatum der Periode"
+
+#. module: accounting_budget_extension
+#: model:ir.model.fields,field_description:accounting_budget_extension.field_budgetextension_budget__state
+msgid "State"
+msgstr "Status"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_search
+msgid "This fiscal year"
+msgstr "Dieses Geschäftsjahr"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/account_financial_report_inheritance.py:283
+#, python-format
+msgid "Total"
+msgstr "Total"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:246
+#, python-format
+msgid "and"
+msgstr "und"
+
+#. module: accounting_budget_extension
+#: model_terms:ir.ui.view,arch_db:accounting_budget_extension.budget_view_form
+msgid "e.g. 3200 Budget"
+msgstr "z.B. 3200 Budget"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:78
+#: selection:budgetextension.budget,state:0
+#, python-format
+msgid "future"
+msgstr "Zukünftig"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:76
+#: selection:budgetextension.budget,state:0
+#, python-format
+msgid "past"
+msgstr "Vergangen"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:77
+#: selection:budgetextension.budget,state:0
+#, python-format
+msgid "present"
+msgstr "Aktuell"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:240
+#, python-format
+msgid "the end date must be subsequent to the start date"
+msgstr "das Enddatum muss später kommen als das Startdatum"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:243
+#, python-format
+msgid "the time period should be unique and shouldn't overlap another budget with the same account"
+msgstr "die Zeitperiode sollte einmalig sein und sollte andere Budgets mit demselben Konto nicht überschneiden"
+
+#. module: accounting_budget_extension
+#: code:addons/accounting_budget_extension/models/budget.py:238
+#, python-format
+msgid "the year of the dates must be identical"
+msgstr "das Geschäftsjahr von den Daten muss identisch sein"

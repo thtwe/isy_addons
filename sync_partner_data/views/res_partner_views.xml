@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_res_partner_form_inherit_sync_partner_data" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.sync.partner.data</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <page name="accounting_disabled" position="after">
+                <page string="Student Info" name="student">
+                    <group>
+                        <group>
+                            <field name="dcid" readonly="1" />
+                            <field name="student_number" readonly="1"/>
+                            <field name="first_name" readonly="1"/>
+                            <field name="middle_name" readonly="1"/>
+                            <field name="last_name" readonly="1"/>
+                            <field name="dob" readonly="1"/>
+                            <field name="ethnicity" readonly="1"/>
+                            <field name="gender" readonly="1"/>
+                            <field name="grade_level" readonly="1"/>
+                            <field name="enroll_status" readonly="1"/>
+                            <field name="payment_option" readonly="1"/>
+                            <field name="billing_address_line1" readonly="1"/>
+                            <field name="billing1_township" readonly="1" />
+                            <field name="addressline1" readonly="1" />
+                        </group>
+                        <group>
+                            <field name="family_id" readonly="1"/>
+                            <field name="guardian_1_name" readonly="1"/>
+                            <field name="guardian_1_relationship" readonly="1"/>
+                            <field name="guardian_1_email" widget="email" readonly="1"/>
+                            <field name="guardian_1_mobile" widget="phone" readonly="1"/>
+                            <field name="guardian_1_employer" readonly="1"/>
+                            <field name="guardian_2_name" readonly="1"/>
+                            <field name="guardian_2_relationship" readonly="1"/>
+                            <field name="guardian_2_email" widget="email" readonly="1"/>
+                            <field name="guardian_2_mobile" widget="phone" readonly="1"/>
+                            <field name="guardian_2_employer" readonly="1"/>
+                            <field name="home_phone" widget="phone" readonly="1" />
+                        </group>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+
+    <record id="view_res_partner_from_inherit_buttons" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.partner_view_buttons"/>
+        <field name="arch" type="xml">
+            <button name="action_view_partner_invoices" position="before">
+                <button type="object" class="oe_stat_button" icon="fa-refresh" name="sync_request">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_text">Sync Data</span>
+                    </div>
+                </button>
+            </button>
+        </field>
+    </record>
+
+</odoo>

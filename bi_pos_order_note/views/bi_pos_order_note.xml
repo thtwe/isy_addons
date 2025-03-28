@@ -1,0 +1,34 @@
+<odoo>
+	<data>
+		<!-- <template id='assets_pos_order_note' name='pos_order_note' inherit_id='point_of_sale.assets'>
+			<xpath expr='.' position='inside'>
+				<script type='text/javascript' src='bi_pos_order_note/static/src/js/pos_order_note.js'/>
+			</xpath>
+		</template>
+ -->
+		<record id="inherit_view_pos_orderline_note" model="ir.ui.view">
+			<field name="name">inherit_pos_orderline_note_tree</field>
+			<field name="model">pos.order</field>
+			<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='lines']//tree/field[@name='discount']" position="after">
+					<field name="notes_product_line" />  
+				</xpath>
+				<xpath expr="//field[@name='lines']//form/group/field[@name='discount']" position="after">
+					<field name="notes_product_line" />  
+				</xpath>
+			</field>
+		</record>
+		<record id="inherit_view_pos_order_note" model="ir.ui.view">
+			<field name="name">inherit_pos_order_note_tree</field>
+			<field name="model">pos.order</field>
+			<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='note']" position="replace">
+					<field name="pos_ordernote" />  
+				</xpath>
+				
+			</field>
+		</record>
+	</data>
+</odoo>

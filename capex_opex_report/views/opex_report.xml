@@ -1,0 +1,1096 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- For Opex/Capex -->
+        <record id="paperformat_headerspacing" model="report.paperformat">
+                <field name="name">Opex Capex</field>
+                <field name="default" eval="True" />
+                <field name="format">A4</field>
+                <field name="page_height">0</field>
+                <field name="page_width">0</field>
+                <field name="orientation">Landscape</field>
+                <field name="margin_top">7</field>
+                <field name="margin_bottom">3</field>
+                <field name="margin_left">7</field>
+                <field name="margin_right">7</field>
+                <field name="header_line" eval="False" />
+                <field name="header_spacing">0</field>
+                <field name="dpi">90</field>
+        </record>
+        
+        <!-- <report
+                id="report_isy_opex"
+                model="isy.opex"
+                string="Opex Report 2"
+                name="capex_opex_report.report_isy_opex_view"
+                file="capex_opex_report.report_isy_opex_view"
+                report_type="qweb-pdf"
+                menu="True"
+                paperformat="capex_opex_report.paperformat_headerspacing"
+                /> -->
+        
+        <record id="report_isy_opex" model="ir.actions.report">
+            <field name="name">Opex Report 2</field>
+            <field name="model">isy.opex</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">capex_opex_report.report_isy_opex_view</field>
+            <field name="report_file">capex_opex_report.report_isy_opex_view</field>
+            <!-- <field name="paperformat" ref="capex_opex_report.paperformat_headerspacing"/> -->
+        </record>
+
+<template id="report_isy_opex_view">
+    <t t-call="web.html_container">
+        <t t-call="web.basic_layout">
+            <div class="page" style="font-size: 9px;">
+                <div class="row">
+                    <strong>The International School Yangon</strong>
+                </div>
+                <div class="row">
+                    <div class="col-11 pull-left">
+                        <strong>Opex Report 2</strong>
+                    </div>
+                    <div class="col-11 pull-right">
+                        <strong>(In Thousand)</strong>
+                    </div>
+                </div>
+                <br/>
+                <!-- Budget -->
+                <div class="row">
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width:25%;font-weight: bold;">BUDGET</td>
+                                <td class="text-center" style="width:4%;">JUL</td>
+                                <td class="text-center" style="width:4%;">AUG</td>
+                                <td class="text-center" style="width:4%;">SEP</td>
+                                <td class="text-center" style="width:4%;">OCT</td>
+                                <td class="text-center" style="width:4%;">NOV</td>
+                                <td class="text-center" style="width:4%;">DEC</td>
+                                <td class="text-center" style="width:4%;">JAN</td>
+                                <td class="text-center" style="width:4%;">FEB</td>
+                                <td class="text-center" style="width:4%;">MAR</td>
+                                <td class="text-center" style="width:4%;">APR</td>
+                                <td class="text-center" style="width:4%;">MAY</td>
+                                <td class="text-center" style="width:4%;">JUN</td>
+                                <td class="text-center" style="width:6%;">YEAR</td>
+                            </tr>
+                            <t t-foreach="sorted(docs.mapped('o_type'),key=lambda x:x.sequence)" t-as="type">
+                                <t t-set="docs_per_type" t-value="docs.filtered(lambda x:x.o_type.id==type.id).sorted(lambda x:x.sequence)"/>
+                                <tr>
+                                    <td t-esc="type.name" style="font-weight: bold"/>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_july')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_aug')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_sep')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_oct')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_nov')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_dec')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_jan')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_feb')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_mar')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_apr')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_may')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_jun')))"/></td>
+                                    <td class="text-right" style="font-weight: bold;"><span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('budget_total')))"/></td>
+                                </tr>
+
+                                <t t-set="jul_subtotal" t-value="0"/>
+                                <t t-set="aug_subtotal" t-value="0"/>
+                                <t t-set="sep_subtotal" t-value="0"/>
+                                <t t-set="oct_subtotal" t-value="0"/>
+                                <t t-set="nov_subtotal" t-value="0"/>
+                                <t t-set="dec_subtotal" t-value="0"/>
+                                <t t-set="jan_subtotal" t-value="0"/>
+                                <t t-set="feb_subtotal" t-value="0"/>
+                                <t t-set="mar_subtotal" t-value="0"/>
+                                <t t-set="apr_subtotal" t-value="0"/>
+                                <t t-set="may_subtotal" t-value="0"/>
+                                <t t-set="jun_subtotal" t-value="0"/>
+                                <t t-set="total_subtotal" t-value="0"/>
+                                <t t-set="budget_subtotal" t-value="0"/>
+
+                                <t t-foreach="docs_per_type" t-as="o">
+                                    <!-- <t t-if="type.id==o.x_opex_type.id"> -->
+                                    <t t-if="not o.show_only_actual or o.budget_total!=0">
+                                        <t>
+                                            <tr>
+                                                <td><span t-field="o.name"/></td>
+                                                <td class="text-right"><span t-field="o.budget_july"/></td>
+                                                <td class="text-right"><span t-field="o.budget_aug"/></td>
+                                                <td class="text-right"><span t-field="o.budget_sep"/></td>
+                                                <td class="text-right"><span t-field="o.budget_oct"/></td>
+                                                <td class="text-right"><span t-field="o.budget_nov"/></td>
+                                                <td class="text-right"><span t-field="o.budget_dec"/></td>
+                                                <td class="text-right"><span t-field="o.budget_jan"/></td>
+                                                <td class="text-right"><span t-field="o.budget_feb"/></td>
+                                                <td class="text-right"><span t-field="o.budget_mar"/></td>
+                                                <td class="text-right"><span t-field="o.budget_apr"/></td>
+                                                <td class="text-right"><span t-field="o.budget_may"/></td>
+                                                <td class="text-right"><span t-field="o.budget_jun"/></td>
+                                                <td class="text-right"><span t-field="o.budget_total"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                            </t>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- Actual -->
+                <div class="row" style="page-break-before: always;">
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width:25%;font-weight: bold;">ACTUAL</td>
+                                <td class="text-center" style="width:4%;">JUL</td>
+                                <td class="text-center" style="width:4%;">AUG</td>
+                                <td class="text-center" style="width:4%;">SEP</td>
+                                <td class="text-center" style="width:4%;">OCT</td>
+                                <td class="text-center" style="width:4%;">NOV</td>
+                                <td class="text-center" style="width:4%;">DEC</td>
+                                <td class="text-center" style="width:4%;">JAN</td>
+                                <td class="text-center" style="width:4%;">FEB</td>
+                                <td class="text-center" style="width:4%;">MAR</td>
+                                <td class="text-center" style="width:4%;">APR</td>
+                                <td class="text-center" style="width:4%;">MAY</td>
+                                <td class="text-center" style="width:4%;">JUN</td>
+                                <td class="text-center" style="width:6%;">YEAR</td>
+                            </tr>
+                            <t t-foreach="sorted(docs.mapped('o_type'),key=lambda x:x.sequence)" t-as="type">
+                                <t t-set="docs_per_type" t-value="docs.filtered(lambda x:x.o_type.id==type.id).sorted(lambda x:x.sequence)"/>
+                                <tr>
+                                    <!-- <t t-foreach="type.sorted(key=lambda x:x.x_sequence)" t-as="t"> -->
+                                        <td t-esc="type.name" style="font-weight: bold"/>
+
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=7,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_july')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=8,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_aug')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=9,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_sep')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=10,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_oct')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=11,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_nov')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=12,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_dec')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=1,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_jan')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=2,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_feb')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=3,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_mar')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=4,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_apr')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=5,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_may')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=6,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                                <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_jun')))"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span></span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right" style="font-weight: bold;">
+                                            <span t-esc="'{0:,.0f}'.format(sum(docs_per_type.mapped('actual_total')))"/>
+                                        </td>
+                                    <!-- </t> -->
+                                </tr>
+                                <t t-foreach="docs_per_type" t-as="o">
+                                    <!-- <t t-if="type.id==o.x_opex_type.id"> -->
+                                    <t>
+                                        <tr>
+                                            <td><span t-field="o.name"/></td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=7,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_july"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=8,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_aug"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=9,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_sep"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=10,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_oct"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=11,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_nov"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=12,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_dec"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=1,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_jan"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=2,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_feb"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=3,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_mar"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=4,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_apr"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=5,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_may"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=6,day=1) &lt; o.date_to_forreport" >
+                                                    <span t-field="o.actual_jun"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span></span>
+                                                </t>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="o.actual_total"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- Monthly -->
+                <div class="row" style="page-break-before: always;">
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width:25%;font-weight: bold;">ACTUAL / BUDGET (MONTHLY)</td>
+                                <td class="text-center" style="width:4%;">JUL</td>
+                                <td class="text-center" style="width:4%;">AUG</td>
+                                <td class="text-center" style="width:4%;">SEP</td>
+                                <td class="text-center" style="width:4%;">OCT</td>
+                                <td class="text-center" style="width:4%;">NOV</td>
+                                <td class="text-center" style="width:4%;">DEC</td>
+                                <td class="text-center" style="width:4%;">JAN</td>
+                                <td class="text-center" style="width:4%;">FEB</td>
+                                <td class="text-center" style="width:4%;">MAR</td>
+                                <td class="text-center" style="width:4%;">APR</td>
+                                <td class="text-center" style="width:4%;">MAY</td>
+                                <td class="text-center" style="width:4%;">JUN</td>
+                                <td class="text-center" style="width:6%;">YEAR</td>
+                            </tr>
+                            <t t-foreach="sorted(docs.mapped('o_type'),key=lambda x:x.sequence)" t-as="type">
+                                <t t-set="docs_per_type" t-value="docs.filtered(lambda x:x.o_type.id==type.id).sorted(lambda x:x.sequence)"/>
+                                <tr>
+                                    <!-- <t t-foreach="type.sorted(key=lambda x:x.x_sequence)" t-as="t"> -->
+                                        <td t-esc="type.name" style="font-weight: bold"/>
+                                        
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=7,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_july'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_july'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=8,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_aug'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_aug'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=9,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_sep'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_sep'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=10,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_oct'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_oct'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=11,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_nov'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_nov'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=12,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_dec'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_dec'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=1,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_jan'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_jan'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=2,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_feb'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_feb'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=3,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_mar'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_mar'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=4,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_apr'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_apr'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=5,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_may'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_may'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=6,day=1) &lt; docs_per_type[0].date_to_forreport" >    
+                                            <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_jun'))"/>
+                                            <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_jun'))"/>
+                                            <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-center" style="font-weight: bold;"> </td>
+                                        </t>
+
+                                        <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_total'))"/>
+                                        <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_total'))"/>
+                                        <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                        <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    <!-- </t> -->
+                                </tr>
+                                <t t-foreach="docs_per_type" t-as="o">
+                                    <!-- <t t-if="type.id==o.x_opex_type.id"> -->
+
+                                    <t t-if="not o.show_only_actual or o.budget_total!=0">
+                                        <tr>
+                                            <td><span t-field="o.name"/></td>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=7,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_july">
+                                                    <t t-set="actual" t-value="o.actual_july"/>
+                                                    <t t-set="budget" t-value="o.budget_july"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=8,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_aug">
+                                                    <t t-set="actual" t-value="o.actual_aug"/>
+                                                    <t t-set="budget" t-value="o.budget_aug"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=9,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_sep">
+                                                    <t t-set="actual" t-value="o.actual_sep"/>
+                                                    <t t-set="budget" t-value="o.budget_sep"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=10,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_oct">
+                                                    <t t-set="actual" t-value="o.actual_oct"/>
+                                                    <t t-set="budget" t-value="o.budget_oct"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=11,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_nov">
+                                                    <t t-set="actual" t-value="o.actual_nov"/>
+                                                    <t t-set="budget" t-value="o.budget_nov"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_start),month=12,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_dec">
+                                                    <t t-set="actual" t-value="o.actual_dec"/>
+                                                    <t t-set="budget" t-value="o.budget_dec"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=1,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_jan">
+                                                    <t t-set="actual" t-value="o.actual_jan"/>
+                                                    <t t-set="budget" t-value="o.budget_jan"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=2,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_feb">
+                                                    <t t-set="actual" t-value="o.actual_feb"/>
+                                                    <t t-set="budget" t-value="o.budget_feb"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=3,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_mar">
+                                                    <t t-set="actual" t-value="o.actual_mar"/>
+                                                    <t t-set="budget" t-value="o.budget_mar"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=4,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_apr">
+                                                    <t t-set="actual" t-value="o.actual_apr"/>
+                                                    <t t-set="budget" t-value="o.budget_apr"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=5,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_may">
+                                                    <t t-set="actual" t-value="o.actual_may"/>
+                                                    <t t-set="budget" t-value="o.budget_may"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(o.date_end),month=6,day=1) &lt; o.date_to_forreport" >    
+                                                <t t-if="o.budget_jun">
+                                                    <t t-set="actual" t-value="o.actual_jun"/>
+                                                    <t t-set="budget" t-value="o.budget_jun"/>
+                                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="amount" t-value="0"/>
+                                                </t>
+                                                <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="o.budget_total">
+                                                <t t-set="actual" t-value="o.actual_total"/>
+                                                <t t-set="budget" t-value="o.budget_total"/>
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- YTD -->
+                <div class="row" style="page-break-before: always;">
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width:25%;font-weight: bold;">ACTUAL / BUDGET (YTD)</td>
+                                <td class="text-center" style="width:4%;">JUL</td>
+                                <td class="text-center" style="width:4%;">AUG</td>
+                                <td class="text-center" style="width:4%;">SEP</td>
+                                <td class="text-center" style="width:4%;">OCT</td>
+                                <td class="text-center" style="width:4%;">NOV</td>
+                                <td class="text-center" style="width:4%;">DEC</td>
+                                <td class="text-center" style="width:4%;">JAN</td>
+                                <td class="text-center" style="width:4%;">FEB</td>
+                                <td class="text-center" style="width:4%;">MAR</td>
+                                <td class="text-center" style="width:4%;">APR</td>
+                                <td class="text-center" style="width:4%;">MAY</td>
+                                <td class="text-center" style="width:4%;">JUN</td>
+                                <td class="text-center" style="width:6%;">YEAR</td>
+                            </tr>
+                            <t t-foreach="sorted(docs.mapped('o_type'),key=lambda x:x.sequence)" t-as="type">
+                                <t t-set="docs_per_type" t-value="docs.filtered(lambda x:x.o_type.id==type.id).sorted(lambda x:x.sequence)"/>
+                                <tr>
+                                    <td t-esc="type.name" style="font-weight: bold"/>
+                                    
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=7,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_july'))"/>
+                                    <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_july'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+                                    
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=8,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_aug'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_aug'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=9,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_sep'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_sep'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=10,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_oct'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_oct'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=11,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_nov'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_nov'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=12,day=12) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_dec'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_dec'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=1,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_jan'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_jan'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=2,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_feb'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_feb'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=3,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_mar'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_mar'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=4,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_apr'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_apr'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=5,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_may'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_may'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=6,day=1) &lt; docs_per_type[0].date_to_forreport" >
+                                    <t t-set="actual" t-value="actual+sum(docs_per_type.mapped('actual_jun'))"/>
+                                    <t t-set="budget" t-value="budget+sum(docs_per_type.mapped('budget_jun'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                    </t>
+                                    <t t-else="">
+                                    <td class="text-center" style="font-weight: bold;"> </td>
+                                    </t>
+
+                                    <t t-set="actual" t-value="sum(docs_per_type.mapped('actual_total'))"/>
+                                    <t t-set="budget" t-value="sum(docs_per_type.mapped('budget_total'))"/>
+                                    <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                    <td class="text-center" style="font-weight: bold;"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                </tr>
+                                <t t-foreach="docs_per_type" t-as="o">
+                                    <!-- <t t-if="type.id==o.x_opex_type.id"> -->
+                                    <t t-if="not o.show_only_actual or o.budget_total!=0">
+                                        <tr>
+                                            <td><span t-field="o.name"/></td>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=7,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="o.actual_july" />
+                                            <t t-set="budget" t-value="o.budget_july" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=8,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_aug" />
+                                            <t t-set="budget" t-value="budget+o.budget_aug" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=9,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_sep" />
+                                            <t t-set="budget" t-value="budget+o.budget_sep" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=10,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_oct" />
+                                            <t t-set="budget" t-value="budget+o.budget_oct" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=11,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_nov" />
+                                            <t t-set="budget" t-value="budget+o.budget_nov" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_start),month=12,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_dec" />
+                                            <t t-set="budget" t-value="budget+o.budget_dec" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=1,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_jan" />
+                                            <t t-set="budget" t-value="budget+o.budget_jan" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=2,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_feb" />
+                                            <t t-set="budget" t-value="budget+o.budget_feb" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=3,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_mar" />
+                                            <t t-set="budget" t-value="budget+o.budget_mar" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=4,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_apr" />
+                                            <t t-set="budget" t-value="budget+o.budget_apr" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=5,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_may" />
+                                            <t t-set="budget" t-value="budget+o.budget_may" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="datetime.datetime.now().date().replace(year=int(docs_per_type[0].date_end),month=6,day=1) &lt; o.date_to_forreport" >
+                                            <t t-set="actual" t-value="actual+o.actual_jun" />
+                                            <t t-set="budget" t-value="budget+o.budget_jun" />
+                                            <t t-if="budget">
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                            </t>
+                                            <t t-else="">
+                                            <td class="text-center"> </td>
+                                            </t>
+
+                                            <t t-if="o.budget_total">
+                                                <t t-set="actual" t-value="o.actual_total" />
+                                                <t t-set="budget" t-value="o.budget_total" />
+                                                <t t-set="amount" t-value="abs(round(actual/budget,2)*100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="amount" t-value="0"/>
+                                            </t>
+                                            <td class="text-center"><span t-esc="'{0:,.0f}%'.format(amount)"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </t>
+    </t>
+</template>
+    </data>
+</odoo>

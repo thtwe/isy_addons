@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- <report
+      id="report_employee_report_exp_d"
+      model="hr.employee"
+      string="Employee Report (Expatriate/Director)"
+      report_type="qweb-pdf"
+      name="sync_employee_data.report_employee_exp_d"
+      file="sync_employee_data.report_employee_exp_d"
+      paperformat="sync_employee_data.paperformat_payslip_with_adjustment"/> -->
+
+      <record id="report_employee_report_local_d" model="ir.actions.report">
+        <field name="name">Employee Report (Director)</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sync_employee_data.report_employee_local_d</field>
+        <field name="report_file">sync_employee_data.report_employee_local_d</field>
+        <field name="paperformat_id" ref='sync_employee_data.paperformat_payslip_with_adjustment' />
+    </record>
+
+    <template id="report_employee_local_d">
+      <t t-call="web.basic_layout">
+        <t t-foreach="docs" t-as="doc">
+          <div class="page" style="font-size:18px;text-align:justify;font-family:Georgia;">
+            <div class="row">
+              <div class="col-4">
+                <label>Date :</label>
+                <t t-if="doc.x_studio_date">
+                  <span t-esc="doc.x_studio_date.strftime('%B %d, %Y')"/>
+                </t>
+              </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="text-center">
+              <h5>To Whom It May Concern</h5>
+            </div>
+            <br/>
+            <div class="row" style="text-align: justify;">
+              <div class="col-12">
+                <p>
+                  The International School Yangon (ISY) is an organization providing an American Curriculum education to the children of diplomats and the international business community. It is accredited by Western Association of School and Colleges of United States
+                  of America.
+                </p>
+              </div>
+            </div>
+            <div class="row" style="text-align: justify;">
+              <div class="col-12">
+                <br/>
+                <p>
+                  This is to formally verify that
+                  <span t-field="doc.name"/>
+                  (NRC Number:
+                  <span t-field="doc.x_nrc_passport"/>) has been working full-time as a
+                  <span t-field="doc.x_job"/>
+                  at the International School Yangon since
+                  <span t-field="doc.x_hire_date"/>. Annual salary for the school year 2023-2024 is US Dollars
+                  <span t-field="doc.contract_id.wage"/>.
+                  <!-- <span t-if="doc.x_gender == 'm' or doc.x_gender == 'M'">He</span>
+                  <span t-if="doc.x_gender == 'f' or doc.x_gender == 'F'">She</span>
+                  holds a contract at ISY till
+                  <span t-esc="doc.x_last_date"/>. -->
+                </p>
+              </div>
+            </div>
+            <!-- <div class="row" style="text-align: justify">
+              <div class="col-12">
+                <br/>
+                <p>
+                  If you have any further queries, please contact us through the information provide below.
+                </p>
+              </div>
+            </div> -->
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="row">
+              <div class="col-4">
+                <span>Sincerely,</span>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <span>Gregory A. Hedger, Ed.D</span>
+                <br/>
+                <span>Director</span>
+              </div>
+            </div>
+          </div>
+        </t>
+      </t>
+    </template>
+
+  </data>
+</odoo>

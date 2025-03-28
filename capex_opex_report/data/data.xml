@@ -1,0 +1,13 @@
+<odoo noupdate="0">
+    <record id="isy_opex_type_income" model="isy.opex.type">
+        <field name="name">Income</field>
+        <field name="type">income</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="isy_opex_type_expense" model="isy.opex.type">
+        <field name="name">Expense</field>
+        <field name="type">expense</field>
+        <field name="sequence">2</field>
+    </record>
+</odoo>

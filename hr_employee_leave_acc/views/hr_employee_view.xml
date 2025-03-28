@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="employee_report_menu" name="Reports" parent="hr.menu_hr_root" sequence="30"
+                  groups="hr.group_hr_manager,hr.group_hr_user"/>
+        <menuitem id="menu_hr_management" name="HR Management" parent="hr.menu_hr_root" sequence="5"
+                  groups="hr.group_hr_manager,hr.group_hr_user"/>
+        <record model="ir.ui.view" id="hr_employee_inherit_form_view">
+            <field name="name">hr.employee.form.view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='personal_information']/group" position="inside">
+                    <group name="emergency_contact" colspan="4" string="Accumulated Leave">
+                                <field name="accumulated_leave"/>
+                                <field name="unpaid_accumulated_leave"/>
+                    </group>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <!-- <record id="view_hr_leave_type_inherit_hr_accumulated" model="ir.ui.view">
+            <field name="name">HR Leave Type Inherit</field>
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//group[@name='description']" position="inside">
+                    <field name="accumulated_leave" string="Accumulated Leave"/>
+                    <field name="unpaid_accumulated_leave" string="Unpaid Accumulated Leave"/>
+                </xpath>
+            </field>
+        </record> -->
+    </data>
+</odoo>

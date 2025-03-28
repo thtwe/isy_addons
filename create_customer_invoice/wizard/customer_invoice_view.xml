@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <!-- <act_window
+            id="action_create_invoice"
+            name="Create Invoice"
+            res_model="create.customer.invoice"
+            binding_model="res.partner"
+            target="new"
+            view_mode="form"/> -->
+
+        <record model="ir.actions.act_window" id="action_create_invoice">
+            <field name="name">Create Invoice</field>
+            <field name="res_model">create.customer.invoice</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="base.model_res_partner"/>
+
+        </record>
+
+        <record id="create_customer_invoice_wizard" model="ir.ui.view">
+            <field name="name">create.customer.invoice.wizard</field>
+            <field name="model">create.customer.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Customer Invoice">
+                    <field name="invoice_ids_empty" invisible="1"/>
+                    <h3 invisible="not invoice_ids_empty"> Please select the product.</h3>
+                    <h3 invisible="invoice_ids_empty">
+                        Created Invoices
+                    </h3>
+                    <group>
+                      <field name="x_invoice_date" require='1'/>
+                      <field name="x_invoice_due_date" require='1'/>
+                      <field name="x_date" require='1'/>
+                      <field name="x_studio_td"/>
+                      <field name="x_studio_other"/>
+                    </group>
+                    <field name="invoice_ids" invisible="invoice_ids_empty" context="{'tree_view_ref': 'account.invoice_tree_with_onboarding'}"/>
+                    <field name="customer_invoice_line_ids" invisible="not invoice_ids_empty">
+                        <tree editable="bottom">
+                            <field name="product_id"/>
+                            <field name="quantity"/>
+                            <field name="uom_id" groups="uom.group_uom"/>
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                    <footer invisible="not invoice_ids_empty">
+                        <button string="Create Invoice"
+                            class="btn-primary"
+                            name="action_create_customer_invoice"
+                            type="object" groups="account.group_account_invoice"/>
+
+                        <button string="Cancel"
+                            class="btn-default"
+                            special="cancel"/>
+                    </footer>
+                    <footer invisible="invoice_ids_empty">
+                        <button string="OK"
+                            class="btn-primary"
+                            special="cancel" />
+                    </footer>
+            	</form>
+        	</field>
+    	</record>
+</odoo>

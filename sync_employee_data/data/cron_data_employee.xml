@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_employee_sync_data" model="ir.cron">
+        <field name="name">Synchronize Employee Data</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model.sync_employee_data()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="doall" eval="False"/>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=0)).strftime('%Y-%m-%d 02:00:00')"/>
+    </record>
+</odoo>

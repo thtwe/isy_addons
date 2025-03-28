@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+        <record model="ir.ui.view" id="isy_opex_opening_view">
+            <field name="name">isy.opex.opening.form</field>
+            <field name="model">isy.opex.opening</field>
+            <field name="arch" type="xml">
+                <form>
+                        <group>
+                            <field name='f_date'/>
+                        </group>
+                        <footer>
+                            <button name="generate_opex" string="Generate" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_isy_opex_opening" model="ir.actions.act_window">
+            <field name="name">Opex Opening</field>
+            <field name="res_model">isy.opex.opening</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="isy_opex_opening_view"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem
+            name="Opex Opening"
+            id="isy_opex_opening_menu"
+            parent="capex_opex_report.isy_opex_main_menu"
+            action="action_isy_opex_opening"
+            sequence="3"/>
+</odoo>

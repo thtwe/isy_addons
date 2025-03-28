@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+        <record model="ir.actions.act_window" id="action_create_capex_line">
+            <field name="name">Generate Capex Line</field>
+            <field name="res_model">x_capex.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="binding_model_id" ref="studio_customization.capex_23a15efc-6ab5-4e93-9750-a597660235fc" />
+            <field name="target">new</field>
+        </record>
+
+        <record id="x_capex_wizard" model="ir.ui.view">
+            <field name="name">x.capex.wizard</field>
+            <field name="model">x_capex.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <p>It will generate capex lines for the month you chose according to the capex group mapping if it doesn't exist.
+                    <br/>
+                    </p>
+                    <group cols='4'>
+                      <field name="month_for" class='oe_inline'/><field name="year_for" class='oe_inline'/>
+                    </group>
+                    <footer >
+                        <button string="Generate"
+                            class="btn-primary"
+                            name="action_create_line"
+                            type="object" />
+
+                        <button string="Cancel"
+                            class="btn-default"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="x_capex_group_form_view">
+            <field name="name">x.capex.group.form</field>
+            <field name="model">x.capex.group</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name='name'/>
+                        <field name='account_ids' widget='many2many_tags' />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="x_capex_group_view">
+            <field name="name">x.capex.group.tree</field>
+            <field name="model">x.capex.group</field>
+            <field name="arch" type="xml">
+                <tree default_order='sequence' editable='bottom'>
+                    <field name='sequence'/>
+                    <field name='name'/>
+                    <field name='account_ids' widget='many2many_tags' />
+                    <field name='user_ids' widget='many2many_tags'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_x_capex_group" model="ir.actions.act_window">
+            <field name="name">Capex Groups</field>
+            <field name="res_model">x.capex.group</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="x_capex_group_view"/>
+        </record>
+        <menuitem
+            name="Capex Groups"
+            id="x_capex_group_menu"
+            parent="accounting_budget_extension_V7.menu_financial_report_root"
+            action="action_x_capex_group"
+            sequence="0"/>
+</odoo>

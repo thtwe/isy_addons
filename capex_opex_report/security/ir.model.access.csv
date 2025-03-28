@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_isy_opex,access_isy_opex,model_isy_opex,base.group_user,1,1,1,1
+access_isy_opex_line,access_isy_opex_line,model_isy_opex_line,base.group_user,1,1,1,1
+access_isy_opex_type,access_isy_opex_type,model_isy_opex_type,base.group_user,1,1,1,1
+access_isy_opex_group,access_isy_opex_group,model_isy_opex_group,base.group_user,1,1,1,1
+
+access_x_opex_wizard,access_x_opex_wizard,model_x_opex_wizard,base.group_user,1,1,1,1
+access_x_capex_wizard,access_x_capex_wizard,model_x_capex_wizard,base.group_user,1,1,1,1
+access_x_capex_group,access_x_capex_group,model_x_capex_group,base.group_user,1,1,1,1

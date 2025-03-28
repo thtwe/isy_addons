@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--Email template -->
+        <record id="email_template_edi_hr_payroll" model="mail.template">
+            <field name="name">Employee - Send Payslip by mail</field>
+            <field name="subject">Monthly Payslip - {{object.contract_id.company_id.short_name}}</field>
+            <field name="email_from">odooadmin@isyedu.org</field>
+            <field name="email_to">{{object.employee_id.work_email}}</field>
+            <field name="partner_to"></field>
+            <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="auto_delete" eval="False"/>
+            <!-- <field name="lang">${object.employee_id.lang}</field> -->
+            <!-- <field name="report_template" ref="hr_payroll.action_report_payslip"/> -->
+            <!--<field name="report_name">{{(object.name or '').replace('/','-')}}</field>-->
+            <!--<field name="report_template" ref="hr_payroll.action_report_payslip"/>-->
+            <field name="body_html"><![CDATA[
+                    
+                    <div style="background-color: rgb(255, 255, 255);"><div class="x_37983906gmail_default"><p class="MsoNormal" style="margin-bottom:0in;line-height:normal"><font color="#222222" face="Helvetica, sans-serif"><span style="font-size: 13.3333px;">Dear <t t-out="object.employee_id.name"/>,</span></font><br><br></p><p class="MsoNormal" style="margin-bottom:0in;line-height:normal">Attached is your salary statement for <t t-out="object.date_from.strftime('%B %Y')"/>.<br></p><p class="MsoNormal" style="margin-bottom:0in;line-height:normal"><font color="#222222" face="Helvetica, sans-serif"><span style="font-size: 13.3333px;"><br></span></font></p><p class="MsoNormal" style="margin-bottom:0in;line-height:normal"><font color="#222222" face="Helvetica, sans-serif"><span style="font-size: 13.3333px;">If you have any questions or concerns, please do not hesitate to contact Steven Linn <i>slinn@isyedu.org</i> for assistance.</span></font><br></p><p class="MsoNormal" style="margin-bottom:0in;line-height:normal"><br></p><p class="MsoNormal" style="margin-bottom:0in;line-height:normal"><font color="#222222" face="Helvetica, sans-serif"><span style="font-size: 13.3333px;">Thank you.</span></font></p><p class="MsoNormal" style="margin-bottom:0in;line-height:normal"><font color="#222222" face="Helvetica, sans-serif"><span style="font-size: 13.3333px;"><br></span></font></p><p class="MsoNormal" style="margin-bottom:0in;line-height:normal"><font color="#222222" face="Helvetica, sans-serif"><span style="font-size: 13.3333px;"><t t-out="object.contract_id.company_id.name"/></span></font></p>
+
+</div></div>
+                    
+                    ]]></field>
+        </record>
+
+
+    </data>
+</odoo>

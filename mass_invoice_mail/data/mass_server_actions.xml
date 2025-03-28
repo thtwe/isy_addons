@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<odoo>
+    <data noupdate="0">
+		<record id="action_mass_invoice_mail" model="ir.actions.server">
+			<field name="name">Send Mass E-mail</field>
+			<field name="model_id" ref="account.model_account_move"/>
+			<field name="state">code</field>
+			<field name="code">action = env["mass.invoice"].sendMail()</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+		</record>
+    </data>
+</odoo>

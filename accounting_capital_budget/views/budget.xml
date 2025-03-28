@@ -1,0 +1,38 @@
+<odoo>
+    <record id="budget_view_search" model="ir.ui.view">
+        <field name="name">capitalbudget.search</field>
+        <field name="model">capital.budget</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="account_id" />
+                <field name="name" />
+                <field name="planned_amount" />
+                <field name="practical_amount"/>
+                <field name="different_amount"/>
+                <filter name="this_fiscal_year" string="This fiscal year" domain="[('state','=','2')]" />
+                <filter name="past_fiscal_years" string="Past fiscal years" domain="[('state','=','1')]" />
+                <filter name="future_fiscal_years" string="Future fiscal years" domain="[('state','=','3')]" />
+                <group string="Group By">
+                    <filter name="group_by_account_id" string="Account" context="{'group_by': 'account_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="budget_action" model="ir.actions.act_window" >
+        <field name="name">Capital Budgets</field>
+        <field name="res_model">capital.budget</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="context" eval="{'search_default_this_fiscal_year': 1, 'search_default_group_by_account_id': 1}" />
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first budget!</p>
+        </field>
+    </record>
+
+    <menuitem
+        id="budget_menu"
+        name="Capital Budgets"
+        parent="account.menu_finance_configuration"
+        action="budget_action"
+        sequence="10" />
+</odoo>

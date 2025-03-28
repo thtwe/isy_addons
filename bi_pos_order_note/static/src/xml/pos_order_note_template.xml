@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <templates id="pos_order_note_template" inherit_id="point_of_sale.template" xml:space="preserve">
+
+    <t t-inherit="point_of_sale.OrderlineCustomerNoteButton" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div" position='replace'>
+            <div class="control-button" >
+                <i class="fa fa-sticky-note" />
+                <span> </span>
+                <!-- <span>Customer Note</span> -->
+                <span>Note</span>
+            </div>
+        </xpath>
+    </t>
+
+
+ <!-- PosBagWidget -->
+   
+      <!-- <t t-name="PosNoteWidget" name="Pos Note Widget">
+          <div class="control-button button confirm" id="pos_bag" style="background-color: #6ec89b; color: #fff;">
+                        Note  
+                    </div>
+   	 </t> -->
+
+     <!-- <t t-name="PosOrderNotePopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-textinput" style="height: 300px !important;">
+                <p class="title" style="background-color: rgb(110,200,155); color: #fff;">Note</p>
+                <p class="body" style="color: #0075AC;">Enter Note Here</p>
+                 <input id ="entered_note" type="text" class='input' name="code" style="margin-left:50px"></input>
+                <div class="footer" style="background-color: rgb(110,200,155); color: #fff;">
+                    <div class="button cancel" style="background-color: #0075AC; color: #fff;">
+                        Cancel 
+                    </div>
+                    <div class="button confirm" id="apply_note" style="background-color: #0075AC; color: #fff;">
+                        Apply 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t> -->
+
+<!--     <t t-extend="PaymentScreenWidget">
+        <t t-jquery="section.paymentlines-container" t-operation="after">
+             <div>
+            	<textarea name="pos_ordernote" placeholder="POS Order note" id="pos_ordernote" style="height: 100px; width:628px; margin-left:12px"></textarea>
+        </div>
+        </t>
+    </t> -->
+
+     <!-- <t t-name="Orderline">
+        <li t-attf-class="orderline #{ line.selected ? 'selected' : '' }">
+            <span class="product-name">
+                <t t-esc="line.get_product().display_name"/>
+            </span>
+            
+            <br/>
+            <t t-if="line.get_to_stay()">
+            <span class="product-name">
+                   <i>  Note : <t t-esc="line.get_to_stay()" /> </i>
+            </span>
+            </t>
+            
+            <span class="price">
+                <t t-esc="widget.format_currency(line.get_display_price())"/>
+            </span>
+            <ul class="info-list">
+                <t t-if="line.get_quantity_str() !== '1' || line.selected ">
+                    <li class="info">
+                        <em>
+                            <t t-esc="line.get_quantity_str()" />
+                        </em>
+                        <t t-esc="line.get_unit().name" />
+                        at
+                        <t t-esc="widget.format_currency(line.get_unit_display_price(),'Product Price')" />
+                        /
+                        <t t-esc="line.get_unit().name" />
+                    </li>
+                </t>
+                <t t-if="line.get_discount_str() !== '0'">
+                    <li class="info">
+                        With a 
+                        <em>
+                            <t t-esc="line.get_discount_str()" />%
+                        </em>
+                        discount
+                    </li>
+                </t>
+            </ul>
+        </li>
+    </t> -->
+
+<!-- <t t-extend="PosTicket" >
+        <t t-jquery="table[class*='receipt-orderlines']" t-operation="replace">
+            <table class='receipt-orderlines'>
+                    <colgroup>
+                        <col width='50%' />
+                        <col width='25%' />
+                        <col width='25%' />
+                    </colgroup>
+                    <tr t-foreach="orderlines" t-as="orderline">
+                        <td>
+                            <t t-esc="orderline.get_product().display_name"/>
+                             <t t-if="orderline.get_discount() > 0">
+                                <div class="pos-disc-font">
+                                    With a <t t-esc="orderline.get_discount()"/>% discount
+                                </div>
+                            </t>
+                            <br/>
+
+                            <t t-if="orderline.get_to_stay()">
+                               <i> Note : <t t-esc="orderline.get_to_stay()" /> </i> 
+                            </t>
+                          
+             
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                        </td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                        </td>
+                    </tr>
+            </table>
+        
+        </t>
+</t> -->
+
+
+
+   </templates>

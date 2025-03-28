@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="group_restrict_employee" model="res.groups">
+            <field name="name">Leave Supervisor Employee Restriction</field>
+        </record>
+
+        <record id="filter_user_employee_allowed" model="ir.rule">
+            <field name="name">Filter Employee for Supervisor</field>
+            <field name="model_id" ref="sync_employee_data.model_hr_employee"/>
+            <field name="groups" eval="[(4, ref('group_restrict_employee'))]"/>
+            <field name="domain_force">[('id','in', [ p.id for p in user.user_employee_ids ])]</field>
+            <field name="active" eval="False"/>
+        </record>
+       
+    </data>
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+        <record model="ir.actions.act_window" id="action_create_opex_line">
+            <field name="name">Generate Opex Line</field>
+            <field name="res_model">x_opex.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="binding_model_id" eval="ref('accounting_budget_extension_V7.model_budget_opex')" />
+            <field name="target">new</field>
+
+        </record>
+
+        <record id="x_opex_wizard" model="ir.ui.view">
+            <field name="name">x.opex.wizard</field>
+            <field name="model">x_opex.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <p>It will generate Opex lines for the month you chose according to the previous month's data if it doesn't exist.
+                    <br/>
+                        <!-- For month <b>July</b>, Opex lines cannot be copied from the previous month and need to be created manually. -->
+                    </p>
+                    <group>
+                      <field name="month_for"/>
+                    </group>
+                    <footer >
+                        <button string="Generate"
+                            class="btn-primary"
+                            name="action_create_line"
+                            type="object" />
+
+                        <button string="Cancel"
+                            class="btn-default"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>
