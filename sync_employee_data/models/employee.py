@@ -84,11 +84,11 @@ class Partner(models.Model):
                     })
                 
                 # update is_a_employee=True
-                if employee.sudo().address_home_id and not employee.sudo().address_home_id.x_studio_is_a_employee_1:
-                    employee.sudo().address_home_id.write({'x_studio_is_a_employee_1':True})
+                if employee.sudo().address_id and not employee.sudo().address_id.x_studio_is_a_employee_1:
+                    employee.sudo().address_id.write({'x_studio_is_a_employee_1':True})
             inactive_emp = self.env['hr.employee'].search([('dcid','not in',dcid_list)])
             inactive_emp.mapped('user_id').write({'active':False})
-            # inactive_emp.mapped('address_home_id').write({'active':False})
+            # inactive_emp.mapped('address_id').write({'active':False})
             inactive_emp.write({'active':False})
 
         except requests.HTTPError as e:
@@ -139,8 +139,8 @@ class Partner(models.Model):
                             'barcode': values.get('staff_id')
                         })
                         # update is_a_employee=True
-                        if employee.sudo().address_home_id and not employee.sudo().address_home_id.x_studio_is_a_employee_1:
-                            employee.sudo().address_home_id.write({'x_studio_is_a_employee_1':True})
+                        if employee.sudo().address_id and not employee.sudo().address_id.x_studio_is_a_employee_1:
+                            employee.sudo().address_id.write({'x_studio_is_a_employee_1':True})
 
                 except requests.HTTPError as e:
                     _logger.debug("Data request failed with code: %r, msg: %r, content: %r",
