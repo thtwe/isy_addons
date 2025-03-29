@@ -1,13 +1,13 @@
 <odoo>
     <data>
-        <template id="portal_my_home_menu_leave_request_activities" name="Portal layout : Leave Request menu entries" inherit_id="portal.portal_breadcrumbs">
+        <template id="portal_my_home_menu_leave_request_activities" name="Portal layout : Leave Request menu entries" inherit_id="portal.portal_breadcrumbs" priority="1">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'holidays'" t-attf-class="breadcrumb-item">Leave Requests
                </li>
             </xpath>
         </template>
 
-        <template id="portal_my_leave_request" name="Portal My Leave Request: Request entries" inherit_id="portal.portal_my_home" priority="6">
+        <template id="portal_my_leave_request" name="Portal My Leave Request: Request entries" inherit_id="portal.portal_my_home" priority="50">
             <xpath expr="//div[@id='portal_alert_category']" position="attributes">
                 <attribute name="t-if">False</attribute>
             </xpath>
