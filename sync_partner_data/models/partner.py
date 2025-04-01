@@ -33,6 +33,7 @@ class Partner(models.Model):
 	gender = fields.Char(string="Gender")
 	ethnicity = fields.Char(string="Ethnicity")
 	grade_level = fields.Char(string="Grade Level")
+	next_year_grade_level = fields.Char(string="Next Year Grade Level")
 	addressline1 = fields.Char(string="Address")
 	student_number = fields.Char(string="Student Number")
 	payment_option = fields.Char(string="Payment Option")
