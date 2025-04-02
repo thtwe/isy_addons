@@ -1,0 +1,122 @@
+.o_form_status_indicator_buttons button .fa-fw {
+    font-size: 1.1rem;
+    color: #6d4563;
+    width: auto;
+}
+
+.o_form_status_indicator_buttons button.o_form_button_save .fa-cloud-upload::after {
+    content: "Save";
+    color: #6d4563;
+    /* margin-right: 3px; */
+}
+
+.o_form_status_indicator_buttons button.o_form_button_cancel .fa-undo::after {
+    content: "Discard Changes";
+    color: #6d4563;
+    font-size: 1rem;
+    /* margin-right: 3px; */
+}
+
+/* Custom button sizes */
+.o_form_button_save,
+.o_form_button_cancel {
+    padding: 8px 10px !important;
+    font-size: 14px !important;
+    min-width: 60px !important;
+    /* margin: 0 3px !important; */
+}
+
+/* Disable auto-save */
+.o_statusbar_status {
+    pointer-events: none;
+}
+
+.o_statusbar_status .o_statusbar_status_item {
+    pointer-events: none;
+}
+
+.o_statusbar_status .o_statusbar_status_item button {
+    pointer-events: auto;
+}
+
+/* Style Save and Discard buttons */
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn {
+    padding: 6px 12px;
+    font-size: 13px;
+    min-width: auto;
+    width: fit-content;
+    margin: 0 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+/* Save button */
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn-primary {
+    background-color: #875A7B;
+    border: 1px solid #875A7B;
+    color: white;
+}
+
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn-primary:hover {
+    background-color: #6B4423;
+    border-color: #6B4423;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn-primary:active {
+    background-color: #5a3a1c;
+    border-color: #5a3a1c;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn-primary .fa {
+    margin-right: 4px;
+    color: white;
+    font-size: 12px;
+}
+
+/* Discard button */
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn-secondary {
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+    color: white;
+}
+
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn-secondary:active {
+    background-color: #4a4f54;
+    border-color: #4a4f54;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn-secondary .fa {
+    margin-right: 4px;
+    color: white;
+    font-size: 12px;
+}
+
+/* Button container */
+.o_form_view .o_form_statusbar .o_statusbar_buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Hover and active states */
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn:hover {
+    opacity: 0.9;
+}
+
+.o_form_view .o_form_statusbar .o_statusbar_buttons .btn:active {
+    transform: translateY(1px);
+} 
