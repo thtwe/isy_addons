@@ -16,6 +16,7 @@
     'assets': {
         'web.assets_backend': [
             'save_edit_auto_restrict/static/src/css/button.css',
+            'save_edit_auto_restrict/static/src/views/form/form_controller.js',
         ],
     },
     'installable': True,

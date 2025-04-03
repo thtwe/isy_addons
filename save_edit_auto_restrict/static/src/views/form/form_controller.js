@@ -1,58 +1,81 @@
-/** @odoo-module **/
-import { patch } from "@web/core/utils/patch";
+/** @odoo-module */
 import { FormController } from "@web/views/form/form_controller";
+import { patch } from "@web/core/utils/patch";
+import { useSetupView } from "@web/views/view_hook";
+import { browser } from "@web/core/browser/browser";
 
 const originalSetup = FormController.prototype.setup;
 
 patch(FormController.prototype, {
-    setup() {
-        this.props.preventEdit = this.env.inDialog ? false : true;
-        originalSetup.call(this);
-    },
-
-    async beforeLeave() {
-        if (this.model.root.isDirty && this.beforeLeaveHook === false) {
-            if (confirm("Do you want to save changes before leaving?")) {
-                this.beforeLeaveHook = true;
-                await this.model.root.save({
-                    reload: false,
-                    onError: this.onSaveError.bind(this),
-                });
-            } else {
-                this.beforeLeaveHook = true;
-                this.model.root.discard();
-            }
-        }
-    },
-
-    beforeUnload: async (ev) => {
-        if (this.model.root.isDirty) {
-            ev.preventDefault();
-            ev.returnValue = '';
-        }
-    },
-
-    // Prevent auto-save on navigation
-    async _onWillNavigate() {
-        if (this.model.root.isDirty) {
-            if (confirm("Do you want to save changes before leaving?")) {
-                await this.model.root.save({
-                    reload: false,
-                    onError: this.onSaveError.bind(this),
-                });
-            } else {
-                this.model.root.discard();
-            }
-        }
-    },
-
-    // Override the default save behavior
-    async save() {
-        if (this.model.root.isDirty) {
-            await this.model.root.save({
-                reload: false,
-                onError: this.onSaveError.bind(this),
-            });
-        }
-    }
-}); 
+/* Patch FormController to restrict auto save in form views */
+   setup(){
+      super.setup(...arguments);
+      this.beforeLeaveHook = false;
+      useSetupView({
+          beforeLeave: () => this.beforeLeave(),
+          beforeUnload: (ev) => this.beforeUnload(ev),
+      });
+   },
+   async beforeLeave() {
+   /* function will work before leave the form */
+      if(this.model.root.isDirty && this.beforeLeaveHook === false && this.model.root.mode === 'edit'){
+          if (confirm("Do you want to save changes before leaving?")) {
+              this.beforeLeaveHook = true;
+              await this.model.root.save({
+                  reload: false,
+                  onError: this.onSaveError.bind(this),
+              });
+          } else {
+              this.beforeLeaveHook = true;
+              this.model.root.discard();
+          }
+      }
+   },
+   beforeUnload: async (ev) => {
+       if (this.model.root.isDirty && this.model.root.mode === 'edit') {
+           ev.preventDefault();
+           ev.returnValue = '';
+       }
+   },
+   async save() {
+       if (this.model.root.isDirty) {
+           await this.model.root.save({
+               reload: false,
+               onError: this.onSaveError.bind(this),
+           });
+       }
+   },
+   async _onWillNavigate() {
+       if (this.model.root.isDirty && this.model.root.mode === 'edit') {
+           if (confirm("Do you want to save changes before leaving?")) {
+               await this.model.root.save({
+                   reload: false,
+                   onError: this.onSaveError.bind(this),
+               });
+           } else {
+               this.model.root.discard();
+           }
+       }
+   },
+   async discard() {
+       if (this.model.root.isDirty) {
+           this.model.root.discard();
+       }
+   },
+   async _onChange() {
+       // Do nothing to prevent auto-save
+       return;
+   },
+   async _onPopState() {
+       if (this.model.root.isDirty && this.model.root.mode === 'edit') {
+           if (confirm("Do you want to save changes before leaving?")) {
+               await this.model.root.save({
+                   reload: false,
+                   onError: this.onSaveError.bind(this),
+               });
+           } else {
+               this.model.root.discard();
+           }
+       }
+   }
+});
