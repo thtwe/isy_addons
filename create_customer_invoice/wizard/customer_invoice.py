@@ -38,7 +38,7 @@ class CustomerInvoice(models.TransientModel):
                                 'journal_id': journal_id.id,
                                 'invoice_date': rec.x_invoice_date,
                                 'invoice_date_due': rec.x_invoice_due_date,
-                                'x_studio_date_for_invoice': rec.x_date,
+                                'x_studio_date_for_invoice': rec.x_invoice_due_date,
                                 'x_studio_others': rec.x_studio_other,
                                 'x_studio_td_bank': rec.x_studio_td,
                                 }
