@@ -57,11 +57,6 @@ patch(FormController.prototype, {
            }
        }
    },
-   async discard() {
-       if (this.model.root.isDirty) {
-           this.model.root.discard();
-       }
-   },
    async _onChange() {
        // Do nothing to prevent auto-save
        return;
@@ -77,5 +72,13 @@ patch(FormController.prototype, {
                this.model.root.discard();
            }
        }
+   },
+   async _onFieldChanged() {
+       // Do nothing to prevent auto-save
+       return;
+   },
+   async _onFieldChangedBatch() {
+       // Do nothing to prevent auto-save
+       return;
    }
 });
