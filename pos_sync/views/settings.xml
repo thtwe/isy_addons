@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sync</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="POS Sync" string="POS Sync" data-key="pos_sync">
+                    <h2>POS Sync</h2>
+                    <group>
+                        <div class="row mt6 o_settings_container">
+                            <div class="o_setting_left_pane">
+                                <label for="pos_commission_account_id" string="Commission Account"/>
+                                <field name="pos_commission_account_id"/>
+
+                                <label for="pos_agent_account_id" string="Agent Account"/>
+                                <field name="pos_agent_account_id"/>
+
+                                <label for="pos_vendor_account_id" string="Vendor Account"/>
+                                <field name="pos_vendor_account_id"/>
+
+                                <label for="pos_income_account_id" string="Income Account"/>
+                                <field name="pos_income_account_id"/>
+
+                                <label for="pos_revenue_account_id" string="Revenue Account"/>
+                                <field name="pos_revenue_account_id"/>
+
+                                <label for="pos_journal_id" string="Journals"/>
+                                <field name="pos_journal_id"/>
+
+                                <label for="pos_commission" string="Commission (%)"/>
+                                <field name="pos_commission"/>
+
+                                <label for="pos_agent" string="Agent"/>
+                                <field name="pos_agent"/>
+
+                            </div>
+
+                        </div>
+                    </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_pos_sync_config_settings" model="ir.actions.act_window">
+        <field name="name">POS Sync Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_settings_view_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'pos_sync'}</field>
+    </record>
+
+    <menuitem id="menu_pos_sync_settings" name="Settings" parent="pos_sync_config_menu" sequence="1" action="action_pos_sync_config_settings"/>
+</odoo>

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sync_pos_recharge,pos_sync.sync_pos_recharge,model_sync_pos_recharge,pos_sync.group_pos_sync_manager,1,1,1,1
+access_sync_pos_transaction,pos_sync.sync_pos_transaction,model_sync_pos_transaction,pos_sync.group_pos_sync_manager,1,1,1,1
+access_sync_pos_type,pos_sync.sync_pos_type,model_sync_pos_type,pos_sync.group_pos_sync_manager,1,1,1,1
+access_pos_currency_rate,pos_sync.pos_currency_rate,model_pos_currency_rate,pos_sync.group_pos_sync_manager,1,1,1,1
+access_pos_payment_transaction,pos_sync.pos_payment_transaction,model_pos_payment_transaction,pos_sync.group_pos_sync_manager,1,1,1,1

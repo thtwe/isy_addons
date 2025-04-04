@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <menuitem name="Synced POS" id="pos_sync_menu_root" groups="pos_sync.group_pos_sync_manager" web_icon="pos_sync,static/src/img/icon.png" sequence="5"/>
+
+    <menuitem id="pos_sync_menu" name="Synced POS" groups="pos_sync.group_pos_sync_manager" parent="pos_sync.pos_sync_menu_root" sequence="1"/>
+    <menuitem id="pos_sync_config_menu" name="Configuration" groups="pos_sync.group_pos_sync_manager" parent="pos_sync.pos_sync_menu_root" sequence="2"/>
+
+    <record id="sync_pos_recharge_tree" model="ir.ui.view">
+        <field name="name">sync.pos.recharge.tree</field>
+        <field name="model">sync.pos.recharge</field>
+        <field name="arch" type="xml">
+            <tree string="Synced POS Recharge" decoration-info="state=='draft'" decoration-muted="state=='cancel'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="customer_no"/>
+                <field name="date"/>
+                <field name="recharge_amount"/>
+                <field name="payment_type_id"/>
+                <field name="sync_payment_type"/>
+                <field name="order_ref"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sync_pos_recharge_form" model="ir.ui.view">
+        <field name="name">sync.pos.recharge.form</field>
+        <field name="model">sync.pos.recharge</field>
+        <field name="arch" type="xml">
+            <form string="Synced POS Recharge Form">
+                <header>
+                    <button string="Done" name="action_move_transaction" invisible="state == 'draft'" type="object" groups="pos_sync.group_pos_sync_manager" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done" readonly="1"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group name="info">
+                            <field name="partner_id"/>
+                            <field name="customer_no" invisible="1"/>
+                            <field name="payment_type_id" domain="[('active', '=', True)]"/>
+                            <field name="sync_payment_type" readonly="1"/>
+                            <field name="order_ref"/>
+                        </group>
+                        <group name="amount">
+                            <field name="date"/>
+                            <field name="recharge_amount"/>
+                        </group>
+                        <group>
+                            <field name="move_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="sync_pos_recharge_search" model="ir.ui.view">
+        <field name="name">sync.pos.recharge.search</field>
+        <field name="model">sync.pos.recharge</field>
+        <field name="arch" type="xml">
+            <search string="Synced POS Recharge Search">
+                <field name="name" string="Name"/>
+                <field name="partner_id" string="Partner"/>
+                <filter name="draft" string="Draft" domain="[('state','=', 'draft')]"/>
+                <filter name="done" string="Posted" domain="[('state','=', 'done')]"/>
+                <filter name="cancel" string="Cancelled" domain="[('state','=', 'cancel')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Partner" name="partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Payment Type" name="payment_type_id" domain="[]" context="{'group_by':'payment_type_id'}"/>
+                    <filter string="Status" name="state" domain="[]" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sync_pos_recharge" model="ir.actions.act_window">
+        <field name="name">Recharge</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sync.pos.recharge</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="pos_sync.sync_pos_recharge_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new record!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="action_sync_pos_recharge_menu" name="Recharge" action="action_sync_pos_recharge" parent="pos_sync.pos_sync_menu" sequence="1"/>
+
+    <record id="sync_pos_transaction_tree" model="ir.ui.view">
+        <field name="name">sync.pos.transaction.tree</field>
+        <field name="model">sync.pos.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="Synced POS Transaction" decoration-info="state=='draft'" decoration-muted="state=='cancel'">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="vendor_id"/>
+                <field name="date"/>
+                <field name="transaction_amount"/>
+                <field name="order_ref"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sync_pos_transaction_form" model="ir.ui.view">
+        <field name="name">sync.pos.transaction.form</field>
+        <field name="model">sync.pos.transaction</field>
+        <field name="arch" type="xml">
+            <form string="Synced POS Transaction Form">
+                <header>
+                    <button string="Done" name="action_move_transaction" invisible="state == 'draft'" type="object" groups="pos_sync.group_pos_sync_manager" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,post,done" readonly="1"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group name="info">
+                            <field name="student_id"/>
+                            <field name="vendor_id"/>
+                            <field name="customer_no" invisible="1"/>
+                            <field name="journal_id"/>
+                            <field name="order_ref"/>
+                        </group>
+                        <group name="amount">
+                            <field name="date"/>
+                            <field name="transaction_amount" readonly="1"/>
+                            <field name="currency_rate" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="move_id" readonly="1"/>
+                            <field name="vendor_reconciled" readonly="1"/>
+                            <field name="agent_reconciled" readonly="1"/>
+                            <field name="agent_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="vendor_payable" readonly="1"/>
+                            <field name="pos_commission_amount" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="sync_pos_transaction_search" model="ir.ui.view">
+        <field name="name">sync.pos.transaction.search</field>
+        <field name="model">sync.pos.transaction</field>
+        <field name="arch" type="xml">
+            <search string="Synced POS Transaction Search">
+                <field name="name" string="Name"/>
+                <field name="student_id" string="Student"/>
+                <field name="vendor_id" string="Vendor"/>
+                <filter name="draft" string="Draft" domain="[('state','=', 'draft')]"/>
+                <filter name="done" string="Posted" domain="[('state','=', 'done')]"/>
+                <filter name="cancel" string="Cancelled" domain="[('state','=', 'cancel')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Partner" name="partner" domain="[]" context="{'group_by':'student_id'}"/>
+                    <filter string="Status" name="state" domain="[]" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sync_pos_transaction" model="ir.actions.act_window">
+        <field name="name">Transactions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sync.pos.transaction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="pos_sync.sync_pos_transaction_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new record!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="action_sync_pos_transaction_menu" name="Transactions" action="action_sync_pos_transaction" parent="pos_sync.pos_sync_menu" sequence="2"/>
+
+    <record id="sync_pos_type_tree" model="ir.ui.view">
+        <field name="name">sync.pos.type.tree</field>
+        <field name="model">sync.pos.type</field>
+        <field name="arch" type="xml">
+            <tree string="Synced POS Payment Type Tree">
+                <field name="name"/>
+                <field name="journal_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sync_pos_type_form" model="ir.ui.view">
+        <field name="name">sync.pos.type.form</field>
+        <field name="model">sync.pos.type</field>
+        <field name="arch" type="xml">
+            <form string="Synced POS Payment Type Form">
+                <div class="oe_button_box" name="button_box">
+                    <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                        <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                    </button>
+                </div>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                        </group>
+                        <group>
+                            <field name="journal_id" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sync_pos_type_search" model="ir.ui.view">
+        <field name="name">sync.pos.type.search</field>
+        <field name="model">sync.pos.type</field>
+        <field name="arch" type="xml">
+            <search string="Synced POS Payment Type Search">
+                <field name="name" string="Name"/>
+                <field name="journal_id" string="Partner"/>
+                <filter name="archive" string="Archived" domain="[('active','=', False)]"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sync_pos_type" model="ir.actions.act_window">
+        <field name="name">Payment Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sync.pos.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="pos_sync.sync_pos_type_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new record!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="action_sync_pos_type_menu" name="Payment Type" action="action_sync_pos_type" parent="pos_sync.pos_sync_config_menu" sequence="3"/>
+
+    <record id="pos_currency_rate_tree" model="ir.ui.view">
+        <field name="name">pos.currency.rate.tree</field>
+        <field name="model">pos.currency.rate</field>
+        <field name="arch" type="xml">
+            <tree string="POS Currency Rate Tree" editable="top">
+                <field name="date" required="1"/>
+                <field name="rate" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="pos_currency_rate_form" model="ir.ui.view">
+        <field name="name">pos.currency.rate.form</field>
+        <field name="model">pos.currency.rate</field>
+        <field name="arch" type="xml">
+            <form string="POS Currency Rate Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date" required="1"/>
+                        </group>
+                        <group>
+                            <field name="rate" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="pos_currency_rate_search" model="ir.ui.view">
+        <field name="name">pos.currency.rate.search</field>
+        <field name="model">pos.currency.rate</field>
+        <field name="arch" type="xml">
+            <search string="POS Currency Rate Search">
+                <field name="rate" string="Rate"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pos_currency_rate" model="ir.actions.act_window">
+        <field name="name">Currency Rate</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.currency.rate</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="pos_sync.pos_currency_rate_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new record!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="action_pos_currency_rate_menu" name="Currency Rate" action="action_pos_currency_rate" parent="pos_sync.pos_sync_config_menu" sequence="4"/>
+
+    <record id="pos_payment_transaction_tree" model="ir.ui.view">
+        <field name="name">pos.payment.transaction.tree</field>
+        <field name="model">pos.payment.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="POS Payment Transaction">
+                <field name="name"/>
+                <field name="payment_amount"/>
+                <field name="payable_total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="pos_payment_transaction_form" model="ir.ui.view">
+        <field name="name">pos.payment.transaction.form</field>
+        <field name="model">pos.payment.transaction</field>
+        <field name="arch" type="xml">
+            <form string="POS Payment Transaction Form">
+                <header>
+                    <button string="Done" name="action_move_transaction" invisible="state == 'draft'" type="object" groups="pos_sync.group_pos_sync_manager" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done" readonly="1"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group name="info">
+                            <field name="vendor_id" required="1"/>
+                            <field name="trans_type" required="1"/>
+                            <field name="journal_id" required="1"/>
+                            <field name="payment_date" required="1"/>
+                            <field name="from_date"/>
+                            <field name="to_date"/>
+                        </group>
+                        <group name="amount">
+                            <field name="payable_total" readonly="1" force_save="1"/>
+                            <field name="payment_amount" force_save="1" readonly="1" modifiers="{'invisible': [('trans_type','=','vendor_payment')]}"/>
+                            <field name="income_amount" modifiers="{'invisible': [('trans_type','=','vendor_payment')]}"/>
+                            <field name="received_amount" readonly="1" force_save="1" modifiers="{'invisible': [('trans_type','=','vendor_payment')]}"/>
+                            <!-- <field name="write_off" invisible="1"/> -->
+                        </group>
+                        <!-- <group> <field name="amount_diff" modifiers="{'invisible':[('write_off','=', False)]}"/> <field name="write_off_account" domain="[('deprecated', '=', False)]" modifiers="{'invisible':[('write_off','=', False)]}"/> <field name="write_off_note"
+                        modifiers="{'invisible':[('write_off','=', False)]}"/> </group> -->
+                        <group>
+                            <field name="move_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="pos_payment_transaction_search" model="ir.ui.view">
+        <field name="name">pos.payment.transaction.search</field>
+        <field name="model">pos.payment.transaction</field>
+        <field name="arch" type="xml">
+            <search string="POS Payment Transaction Search">
+                <field name="name" string="Name"/>
+                <field name="vendor_id" string="Vendor"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="action_pos_payment_transaction" model="ir.actions.act_window">
+        <field name="name">Payments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.payment.transaction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="search_view_id" ref="pos_sync.pos_payment_transaction_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new record!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="action_pos_payment_transaction_menu" name="Payments" action="action_pos_payment_transaction" parent="pos_sync.pos_sync_menu" sequence="3"/>
+
+</odoo>
