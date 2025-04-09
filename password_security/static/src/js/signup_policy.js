@@ -1,7 +1,7 @@
 //  Copyright 2018 Modoolar <info@modoolar.com>
 //  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-odoo.define('password_security.signup.policy1', function (require) {
-    "use strict";
+// odoo.define('password_security.signup.policy1', function (require) {
+//     "use strict";
 
     // var base = require('web_editor.base');
     // var policy = require('auth_password_policy');
@@ -36,4 +36,4 @@ odoo.define('password_security.signup.policy1', function (require) {
     //         meter.update($password.val());
     //     });
     // });
-});
+// });
