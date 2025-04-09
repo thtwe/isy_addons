@@ -63,7 +63,7 @@ class SyncPosRecharge(models.Model):
                 if value.get('customer_type') == 'Staff':
                     employee_id = self.env['hr.employee'].search(
                         [('barcode', '=', value.get('customer_number'))])
-                    partner = employee_id.address_home_id
+                    partner = employee_id.address_id
                 else:
                     partner = self.env['res.partner'].search(
                         [('student_number', '=', value.get('customer_number'))])
@@ -213,7 +213,7 @@ class SyncPosTransaction(models.Model):
                 else:
                     employee_id = self.env['hr.employee'].search(
                         [('barcode', '=', value.get('user_number'))])
-                    partner = employee_id.address_home_id
+                    partner = employee_id.address_id
 
                 vendor_id = self.env['res.partner'].search(
                     [('name', 'ilike', value.get('vendor_name'))], limit=1)

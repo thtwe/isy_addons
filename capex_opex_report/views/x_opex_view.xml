@@ -4,7 +4,7 @@
             <field name="name">Generate Opex Line</field>
             <field name="res_model">x_opex.wizard</field>
             <field name="view_mode">form</field>
-            <field name="binding_model_id" eval="ref('accounting_budget_extension_V7.model_budget_opex')" />
+            <field name="binding_model_id" ref="studio_customization.opex_9ed48a09-3b4b-444d-be98-aee3f5e24015"/>
             <field name="target">new</field>
 
         </record>
