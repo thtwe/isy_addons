@@ -43,16 +43,16 @@ class CustomerInvoice(models.TransientModel):
                                 'x_studio_td_bank': rec.x_studio_td,
                                 }
                 account_invoice_id = self.env['account.move'].create(invoice_data)
-
                 account_id = self.env['account.account'].search([('account_type', '=', 'income')], limit=1)
                 for line in rec.customer_invoice_line_ids:
+                    prod_account_id = line.product_id.property_account_income_id
                     account_invoice_line_data = {
                         'product_id': line.product_id.id,
                         'quantity': line.quantity,
                         'name': line.name,
                         'move_id': account_invoice_id.id,
-                        'price_unit': 0.0,
-                        'account_id': account_id.id,
+                        'price_unit': line.product_id.lst_price,
+                        'account_id': prod_account_id.id,
                     }
                     # account_invoice_line_id = self.env['account.move.line'].create(account_invoice_line_data)
                     account_invoice_id.write({'invoice_line_ids':[(0,0,account_invoice_line_data)]})
