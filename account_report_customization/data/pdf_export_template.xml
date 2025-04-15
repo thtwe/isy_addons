@@ -11,7 +11,7 @@
                  <div t-att-class="'o_content ' + options['css_custom_class']">
                      <header style="background: none; background-color: transparent !important;">
                          <div class="o_title" style="text-align: left !important;">
-                            <h1>
+                            <h1 style="font-size: 30px;">
                              <t t-if="report.filter_show_draft and options['all_entries']">[Draft]</t>
                              <t t-out="report_title"/>
                              </h1>
