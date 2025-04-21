@@ -1,6 +1,7 @@
 import io
 import markupsafe
-from datetime import datetime
+from datetime import datetime, timedelta
+
 
 from odoo import models, fields, api
 from itertools import groupby
@@ -13,6 +14,8 @@ class AccountReport(models.Model):
 
         custom_print_templates = report_info['custom_display'].get('pdf_export', {})
         template = custom_print_templates.get('pdf_export_main', 'account_report_customization.pdf_export_isy')
+        date_filter = options.get('column_headers')[0][0].get('forced_options').get('date').get('date_to') if options.get('column_headers') else None
+
         render_values = {
             'report': self,
             'report_title': self.name,
@@ -27,7 +30,8 @@ class AccountReport(models.Model):
             'custom_templates': custom_print_templates,
             'printed_on': datetime.now().strftime('%Y-%m-%d %H:%M'),
             'company_name': report_info['report']['company_name'],
-            'currency_symbol': report_info['report']['company_currency_symbol']
+            'currency_symbol': report_info['report']['company_currency_symbol'],
+            'date_filter': datetime.strptime(date_filter, "%Y-%m-%d").strftime("%B %Y") if date_filter else None
         }
         if additional_context:
             render_values.update(additional_context)

@@ -10,8 +10,8 @@
              <body t-att-dir="env['res.lang']._lang_get(lang or env.user.lang).direction or 'ltr'">
                  <div t-att-class="'o_content ' + options['css_custom_class']">
                      <header style="background: none; background-color: transparent !important;">
-                         <div class="o_title" style="text-align: left !important;">
-                            <h1 style="font-size: 30px;">
+                         <div style="text-align: left !important;">
+                            <h1 style="font-size: 40px;">
                              <t t-if="report.filter_show_draft and options['all_entries']">[Draft]</t>
                              <t t-out="report_title"/>
                              </h1>
@@ -57,6 +57,7 @@
         <t t-set="company_names" t-value="[company['name'] for company in options['companies']]"/>
         <div class="row" style="text-align: left; padding-left: 5px !important;">
             <div class="col-10">
+                <t t-esc="date_filter"/><br/>
                 <strong>Companies:</strong>
                 <t t-foreach="company_names" t-as="cname">
                     <t t-out="cname"/><br/>
@@ -227,7 +228,7 @@
             <tr t-att-class="o_line_level + o_bold + o_overflow" name="pdf_export_isy_table_body_lines_tr"
     t-att-style="'text-transform: uppercase; border-bottom: double 3px #000; background-color: transparent !important;' if is_level_0 else ''">
 
-                <td t-att-colspan="line.get('colspan', '1')" class="o_line_name_level">
+                <td t-att-colspan="line.get('colspan', '1')" class="o_line_name_level" style="font-weight: bold; color:black !important">
                     <t t-out="line.get('name')"/>
                     <t t-if="line.get('footnote')">
                         <sup>
@@ -292,8 +293,8 @@
             <t t-set="o_classes" t-value="'o_overflow_value'"/>
         </t>
 
-        <span t-att-class="o_classes">
-            <t t-if="cell.get('figure_type') == 'monetary'">
+        <span t-att-class="o_classes" style="font-weight: bold;">
+            <t t-if="cell.get('name')">
                 <t t-esc="currency_symbol"/> 
             </t>
             <t t-esc="cell.get('name')"/>
