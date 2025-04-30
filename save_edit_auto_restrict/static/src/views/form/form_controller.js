@@ -18,7 +18,7 @@ patch(FormController.prototype, {
    },
    async beforeLeave() {
    /* function will work before leave the form */
-      if(this.model.root.isDirty && this.beforeLeaveHook === false && this.model.root.mode === 'edit'){
+      if(this.model && this.model.root.isDirty && this.beforeLeaveHook === false && this.model.root.mode === 'edit'){
           if (confirm("Do you want to save changes before leaving?")) {
               this.beforeLeaveHook = true;
               await this.model.root.save({
@@ -32,13 +32,13 @@ patch(FormController.prototype, {
       }
    },
    beforeUnload: async (ev) => {
-       if (this.model.root.isDirty && this.model.root.mode === 'edit') {
+       if (this.model && this.model.root.isDirty && this.model.root.mode === 'edit') {
            ev.preventDefault();
            ev.returnValue = '';
        }
    },
    async save() {
-       if (this.model.root.isDirty) {
+       if (this.model && this.model.root.isDirty) {
            await this.model.root.save({
                reload: false,
                onError: this.onSaveError.bind(this),
@@ -46,7 +46,7 @@ patch(FormController.prototype, {
        }
    },
    async _onWillNavigate() {
-       if (this.model.root.isDirty && this.model.root.mode === 'edit') {
+       if (this.moddel && this.model.root.isDirty && this.model.root.mode === 'edit') {
            if (confirm("Do you want to save changes before leaving?")) {
                await this.model.root.save({
                    reload: false,
@@ -62,7 +62,7 @@ patch(FormController.prototype, {
        return;
    },
    async _onPopState() {
-       if (this.model.root.isDirty && this.model.root.mode === 'edit') {
+       if (this.model && this.model.root.isDirty && this.model.root.mode === 'edit') {
            if (confirm("Do you want to save changes before leaving?")) {
                await this.model.root.save({
                    reload: false,
