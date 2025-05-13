@@ -37,6 +37,11 @@ class HrLeaveType(models.Model):
 		if self.accumulated_leave and self.unpaid_accumulated_leave:
 			raise ValidationError(_("Accumulated and Unpaid Accumulated cannot enable at the same leave type."))
 	
+class HrSubLeaveType(models.Model):
+	_name = 'hr.sub.leave.type'
+	_description = 'Sub Leave Type'
 
-
-
+	name = fields.Char(string='Name')
+	hr_leave_type_id = fields.Many2one('hr.leave.type', string='Leave Type')
+	max_days = fields.Float(string='Max Days')
+	active = fields.Boolean(string='Active', default=True)
