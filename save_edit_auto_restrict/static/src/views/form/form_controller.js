@@ -22,7 +22,7 @@ patch(FormController.prototype, {
           if (confirm("Do you want to save changes before leaving?")) {
               this.beforeLeaveHook = true;
               await this.model.root.save({
-                  reload: false,
+                  reload: this.model.root.isNew,
                   onError: this.onSaveError.bind(this),
               });
           } else {
@@ -40,13 +40,13 @@ patch(FormController.prototype, {
    async save() {
        if (this.model && this.model.root.isDirty) {
            await this.model.root.save({
-               reload: false,
+               reload: this.model.root.isNew,
                onError: this.onSaveError.bind(this),
            });
        }
    },
    async _onWillNavigate() {
-       if (this.moddel && this.model.root.isDirty && this.model.root.mode === 'edit') {
+       if (this.model && this.model.root.isDirty && this.model.root.mode === 'edit') {
            if (confirm("Do you want to save changes before leaving?")) {
                await this.model.root.save({
                    reload: false,
