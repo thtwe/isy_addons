@@ -17,7 +17,8 @@
    		</xpath>
    		
    		<xpath expr="//div[@t-attf-class='card border-0 mx-auto bg-100 {{login_card_classes}} o_database_list']" position="before">
-   			<div id="background-wrapper" t-attf-style="background-image: url('#{background_src}');"></div>
+   			<!-- <div id="background-wrapper" t-attf-style="background-image: url('#{background_src}');"></div> -->
+			<div id="background-wrapper" style="background-image: url('/odoo_web_login/static/src/img/background_login_2.png');"></div>
    		</xpath>
    		
    		<xpath expr="//div[@t-attf-class='card border-0 mx-auto bg-100 {{login_card_classes}} o_database_list']" position="attributes">

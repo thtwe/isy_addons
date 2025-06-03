@@ -31,7 +31,7 @@
                  <t t-if="request.env.user.portal_employee_leave" t-call="isy_ticketing.portal_docs_entry">
                     <t t-set="title">Leave Requests</t>
                     <t t-set="url" t-value="'/my/leave_request'"/>
-                    <!--<t t-set="count" t-value="holidays_count"/>-->
+                    <t t-set="count" t-value="holidays_count"/>
                 </t>
             </xpath>
         </template>
