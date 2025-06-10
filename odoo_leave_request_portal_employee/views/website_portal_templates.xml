@@ -95,7 +95,7 @@
                                 <span t-field="holiday.number_of_days"/>
                             </td>
                             <td>
-                            <span class="badge badge-pill badge-info" title="Current stage of the task" t-esc="dict(holiday._fields['state'].selection).get(holiday.state)"/>
+                            <t class="badge badge-pill badge-info" title="Current stage of the task" t-esc="dict(holiday._fields['state'].selection).get(holiday.state)"/>
                         </td>
                             <td>
                                 <a class="btn btn-info" 
