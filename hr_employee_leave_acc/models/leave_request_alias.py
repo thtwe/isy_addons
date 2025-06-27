@@ -78,9 +78,14 @@ class HrLeaveAlias(models.Model):
 				holiday.employee_id.accumulated_leave = accumulated_leave - holiday.number_of_days_display
 			elif holiday_type_id.unpaid_accumulated_leave:
 				unpaid_accumulated_leave = holiday.employee_id.unpaid_accumulated_leave
-				holiday.employee_id.unpaid_accumulated_leave = unpaid_accumulated_leave - \
+				if holiday_type_id.requires_allocation == 'no':
+					holiday.employee_id.unpaid_accumulated_leave = unpaid_accumulated_leave - \
 					holiday.number_of_days_display
+				else:
+					if unpaid_accumulated_leave - holiday.number_of_days_display < 0:
+						holiday.employee_id.unpaid_accumulated_leave = 0
+						holiday.employee_id.accumulated_leave = holiday.employee_id.accumulated_leave - (holiday.number_of_days_display - unpaid_accumulated_leave)
+					else:
+						holiday.employee_id.unpaid_accumulated_leave = unpaid_accumulated_leave - \
+						holiday.number_of_days_display
 		return True
-
-
-

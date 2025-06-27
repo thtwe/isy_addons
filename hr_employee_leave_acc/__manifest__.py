@@ -32,6 +32,7 @@
     'depends': ['base', 'hr', 'mail', 'hr_gamification', 'hr_holidays'],
     'data': [
         'views/hr_employee_view.xml',
+        'views/hr_sub_leave_type_view.xml',
     ],
     'demo': [],
     'images': ['static/description/banner.jpg'],

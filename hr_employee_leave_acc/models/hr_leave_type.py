@@ -23,8 +23,7 @@
 from datetime import datetime, timedelta
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-
-
+from odoo.tools.float_utils import float_round
 
 class HrLeaveType(models.Model):
 	_inherit = 'hr.leave.type'
@@ -37,6 +36,41 @@ class HrLeaveType(models.Model):
 		if self.accumulated_leave and self.unpaid_accumulated_leave:
 			raise ValidationError(_("Accumulated and Unpaid Accumulated cannot enable at the same leave type."))
 	
+class HrSubLeaveType(models.Model):
+	_name = 'hr.sub.leave.type'
+	_description = 'Sub Leave Type'
+	_inherit = ['mail.thread']
 
+	name = fields.Char(string='Name')
+	display_name = fields.Char(string='Display Name', compute='_compute_display_name')
+	hr_leave_type_id = fields.Many2one('hr.leave.type', string='Leave Type')
+	max_days = fields.Float(string='Max Days')
+	active = fields.Boolean(string='Active', default=True)
 
+	def _taken_leave(self):
+		employee_id = self.env.user.employee_id
+		return self.env['hr.leave'].search([
+                ('employee_id', '=', employee_id.id),
+                ('holiday_status_id', '=', self.hr_leave_type_id.id),
+                ('state', 'in', ['validate', 'validate1', 'confirm']),
+                ('sub_leave_type_id', '=', self.id)
+            ])
 
+	@api.depends_context('holiday_status_display_name', 'employee_id', 'from_manager_leave_form')
+	def _compute_display_name(self):
+		for record in self:
+			name = record.name
+			leave_type = record.hr_leave_type_id
+			taken_sub_leave_days = record._taken_leave()
+			if (
+				leave_type.requires_allocation == "yes"
+				and not self._context.get('from_manager_leave_form')
+			):
+				if record.max_days != leave_type.max_leaves:
+					remaining = float_round(record.max_days - taken_sub_leave_days.number_of_days, precision_digits=2) or 0.0
+				else:
+					remaining = float_round(leave_type.virtual_remaining_leaves, precision_digits=2) or 0.0
+				max_days = float_round(record.max_days, precision_digits=2) or 0.0
+				suffix = _(' hours') if leave_type.request_unit == 'hour' else _(' days')
+				name = f"{name} ({_('%g remaining out of %g') % (remaining, max_days)}{suffix})"
+			record.display_name = name
