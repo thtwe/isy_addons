@@ -49,11 +49,13 @@ class HrSubLeaveType(models.Model):
 
 	def _taken_leave(self):
 		employee_id = self.env.user.employee_id
+		s_fiscal_date = self.hr_leave_type_id.get_fiscal_date()
 		return self.env['hr.leave'].search([
                 ('employee_id', '=', employee_id.id),
                 ('holiday_status_id', '=', self.hr_leave_type_id.id),
                 ('state', 'in', ['validate', 'validate1', 'confirm']),
-                ('sub_leave_type_id', '=', self.id)
+                ('sub_leave_type_id', '=', self.id),
+				('date_from','>',s_fiscal_date)
             ])
 
 	@api.depends_context('holiday_status_display_name', 'employee_id', 'from_manager_leave_form')
@@ -67,7 +69,8 @@ class HrSubLeaveType(models.Model):
 				and not self._context.get('from_manager_leave_form')
 			):
 				if record.max_days != leave_type.max_leaves:
-					remaining = float_round(record.max_days - taken_sub_leave_days.number_of_days, precision_digits=2) or 0.0
+					taken_sub_leave_days = sum(leave.number_of_days for leave in taken_sub_leave_days)
+					remaining = float_round(record.max_days - taken_sub_leave_days, precision_digits=2) or 0.0
 				else:
 					remaining = float_round(leave_type.virtual_remaining_leaves, precision_digits=2) or 0.0
 				max_days = float_round(record.max_days, precision_digits=2) or 0.0
