@@ -27,6 +27,7 @@
                             <field name="name"/>
                             <field name="hr_leave_type_id" string="Leave Type"/>
                             <field name="max_days" string="Max Days"/>
+                            <field name="is_personal_leave" string="Is Personal Leave"/>
                         </group>
                         <group >
                         </group>
@@ -43,6 +44,7 @@
             <tree string="Sub Leave Type" multi_edit="1">
                 <field name="name"/>
                 <field name="hr_leave_type_id"/>
+                <field name="is_personal_leave"/>
                 <field name="max_days"/>
             </tree>
         </field>

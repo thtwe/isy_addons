@@ -45,7 +45,7 @@ class ResUsers(models.Model):
         if result_vals:
             template = self.env.ref('notify_group_change.notify_group_change_template')
 
-            body = "<div>Dear Paul,</div><br/>"
+            body = "<div>Dear Steven,</div><br/>"
             body += "<div>" + self.partner_id.name + " account access have been changed below:  </div><br/>"
             body +="<ul>"
             for rv in result_vals:

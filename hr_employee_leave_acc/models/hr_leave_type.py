@@ -24,6 +24,7 @@ from datetime import datetime, timedelta
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_round
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 class HrLeaveType(models.Model):
 	_inherit = 'hr.leave.type'
@@ -35,7 +36,7 @@ class HrLeaveType(models.Model):
 	def _check_duplicated_accumulated_leave(self):
 		if self.accumulated_leave and self.unpaid_accumulated_leave:
 			raise ValidationError(_("Accumulated and Unpaid Accumulated cannot enable at the same leave type."))
-	
+
 class HrSubLeaveType(models.Model):
 	_name = 'hr.sub.leave.type'
 	_description = 'Sub Leave Type'
@@ -46,10 +47,47 @@ class HrSubLeaveType(models.Model):
 	hr_leave_type_id = fields.Many2one('hr.leave.type', string='Leave Type')
 	max_days = fields.Float(string='Max Days')
 	active = fields.Boolean(string='Active', default=True)
+	is_personal_leave = fields.Boolean(string="Is Personal Leave", default=False)
+
+	def get_fiscal_date(self):
+		fd = self.env.user.company_id.fiscalyear_last_day
+		fm = self.env.user.company_id.fiscalyear_last_month
+		now = datetime.now()
+		e_fiscal_date = datetime.strptime(
+		"%s-%s-%s" % (now.year, fm, fd),
+		DEFAULT_SERVER_DATE_FORMAT
+		)
+		if now >= e_fiscal_date:
+			e_fiscal_date = datetime.strptime(
+				"%s-%s-%s" % (now.year + 1, fm, fd),
+				DEFAULT_SERVER_DATE_FORMAT
+			) + timedelta(days=1)
+		s_fiscal_date = datetime.strptime(
+			"%s-%s-%s" % (e_fiscal_date.year - 1, fm, fd),
+			DEFAULT_SERVER_DATE_FORMAT
+		) + timedelta(days=1)
+
+		return str(s_fiscal_date)
+
+	def get_remaining_leaves(self):
+		self.ensure_one()
+		max_days = float_round(self.max_days, precision_digits=2) or 0.0
+		taken_sub_leave_days = self._taken_leave()
+		taken_sub_leave_days = sum(leave.number_of_days for leave in taken_sub_leave_days)
+		if self.max_days != self.hr_leave_type_id.max_leaves:
+			if self.hr_leave_type_id.max_leaves < self.max_days:
+				max_days = float_round(self.hr_leave_type_id.max_leaves, precision_digits=2) or 0.0
+				remaining = float_round(self.hr_leave_type_id.max_leaves - taken_sub_leave_days, precision_digits=2) or 0.0
+			else:
+				remaining = float_round(self.max_days - taken_sub_leave_days, precision_digits=2) or 0.0
+		else:
+			remaining = float_round(self.hr_leave_type_id.virtual_remaining_leaves, precision_digits=2) or 0.0
+
+		return (max(max_days, 0.0), max(remaining, 0.0))
 
 	def _taken_leave(self):
 		employee_id = self.env.user.employee_id
-		s_fiscal_date = self.hr_leave_type_id.get_fiscal_date()
+		s_fiscal_date = self.get_fiscal_date()
 		return self.env['hr.leave'].search([
                 ('employee_id', '=', employee_id.id),
                 ('holiday_status_id', '=', self.hr_leave_type_id.id),
@@ -58,22 +96,23 @@ class HrSubLeaveType(models.Model):
 				('date_from','>',s_fiscal_date)
             ])
 
-	@api.depends_context('holiday_status_display_name', 'employee_id', 'from_manager_leave_form')
+	def requested_display_name(self):
+		return self._context.get('sub_leave_type_display_name', True) and self._context.get('employee_id')
+
+	@api.depends('hr_leave_type_id.requires_allocation', 'hr_leave_type_id.virtual_remaining_leaves', 'hr_leave_type_id.max_leaves', 'hr_leave_type_id.request_unit')
+	@api.depends_context('sub_leave_type_display_name', 'holiday_status_display_name', 'employee_id', 'from_manager_leave_form')
 	def _compute_display_name(self):
+		if not self.hr_leave_type_id.requested_display_name():
+			return super()._compute_display_name()
+
 		for record in self:
 			name = record.name
 			leave_type = record.hr_leave_type_id
-			taken_sub_leave_days = record._taken_leave()
 			if (
 				leave_type.requires_allocation == "yes"
 				and not self._context.get('from_manager_leave_form')
 			):
-				if record.max_days != leave_type.max_leaves:
-					taken_sub_leave_days = sum(leave.number_of_days for leave in taken_sub_leave_days)
-					remaining = float_round(record.max_days - taken_sub_leave_days, precision_digits=2) or 0.0
-				else:
-					remaining = float_round(leave_type.virtual_remaining_leaves, precision_digits=2) or 0.0
-				max_days = float_round(record.max_days, precision_digits=2) or 0.0
+				values = record.get_remaining_leaves()
 				suffix = _(' hours') if leave_type.request_unit == 'hour' else _(' days')
-				name = f"{name} ({_('%g remaining out of %g') % (remaining, max_days)}{suffix})"
+				name = f"{name} ({_('%g remaining out of %g') % (values[1], values[0])}{suffix})"
 			record.display_name = name
