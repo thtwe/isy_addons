@@ -22,6 +22,8 @@
 ###################################################################################
 import re
 from datetime import datetime, timedelta
+from math import ceil
+
 from odoo import models, fields, api
 from odoo.tools import email_split
 from odoo.addons.resource.models.utils import float_to_time, HOURS_PER_DAY
@@ -89,3 +91,10 @@ class HrLeaveAlias(models.Model):
 						holiday.employee_id.unpaid_accumulated_leave = unpaid_accumulated_leave - \
 						holiday.number_of_days_display
 		return True
+
+	@api.depends('date_from', 'date_to', 'resource_calendar_id', 'holiday_status_id.request_unit')
+	def _compute_duration(self):
+		for holiday in self:
+			days, hours = holiday._get_duration()
+			holiday.number_of_hours = hours
+			holiday.number_of_days = days if holiday.request_unit_half and days == 0.5 else int(days)
